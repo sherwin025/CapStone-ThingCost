@@ -7,7 +7,7 @@ import { PurchasedList } from "./itemslists/purchasedlist"
 import { ShoppingList } from "./itemslists/shoppinglist"
 import { ItemDetail } from "./itemslists/ItemDetail.js"
 import {MyProfile } from "./profile/profileform"
-
+import { NoteForm } from "./itemslists/newnoteform"
 export const ApplicationViews = () => {
     return (
         <>
@@ -27,7 +27,11 @@ export const ApplicationViews = () => {
                     </Route>
                     <Route path="/shoppinglist/:itemId(\d+)">
                         <ItemDetail />
+                    </Route> 
+                    <Route path="/newnote/:ItemnoteId(\d+)">
+                        <NoteForm />
                     </Route>
+
                 </ItemProvider>
             </UserItemProvider>
         </>

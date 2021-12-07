@@ -4,6 +4,7 @@ export const UserItemContext = createContext()
 
 export const UserItemProvider = (props) => {
     const [itemtypes, setitemtypes] = useState([])
+    const [difficultys, setdifficulties] = useState([])
 
 
     const getalltypes = () => {
@@ -12,11 +13,17 @@ export const UserItemProvider = (props) => {
             .then(setitemtypes)
     }
 
+    const getalldifficulties = () => {
+        return fetch("http://localhost:8088/buydifficultys")
+            .then(res => res.json())
+            .then(setdifficulties)
+    }
+
 
     return (
 
         <UserItemContext.Provider value={{
-            itemtypes, getalltypes
+            itemtypes, getalltypes, difficultys, getalldifficulties
         }}>
             {props.children}
         </UserItemContext.Provider>

@@ -14,9 +14,13 @@ export const AnalyzeForm = () => {
     const { itemtypes, getalltypes } = useContext(UserItemContext)
     const { addItem } = useContext(ItemContext)
     const history = useHistory()
+    const [user, setuser] = useState({})
 
     useEffect(() => {
         getalltypes()
+        fetch(`http://localhost:8088/users/${localStorage.getItem("ThingCost_customer")}`)
+        .then(res=>res.json())
+        .then(setuser)
     }, [])
 
     const handlestate = (event) => {
@@ -33,8 +37,9 @@ export const AnalyzeForm = () => {
                 price: parseInt(item.price),
                 name: item.name,
                 need: item.need === "true",
-                userId: 1,
-                buydifficulty: 1,
+                userId: parseInt(localStorage.getItem("ThingCost_customer")),
+                hoursNeeded: parseInt(item.price) / user.hourlySalary, 
+                buydifficulty: 0,
                 purchased: false
             }
             
