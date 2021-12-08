@@ -1,25 +1,22 @@
-import react, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router"
 import { ItemContext } from "./ListProvider"
 import { UserItemContext } from "../Analyze/FormProvider"
 import { Link } from "react-router-dom"
-
+import "./ItemDetail.css"
 export const ItemDetail = () => {
     const { itemId } = useParams()
-    const { items, getItems, addItem, getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
+    const {getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
     const { itemtypes, getalltypes, difficultys, getalldifficulties } = useContext(UserItemContext)
     const [theItem, setItem] = useState({})
     const history = useHistory()
 
     useEffect(() => {
-
         getItemById(parseInt(itemId))
             .then(res => setItem(res))
             .then(getalltypes)
             .then(getalldifficulties)
             .then(getNotes)
-
-
     }, [itemId])
 
 
@@ -77,22 +74,29 @@ export const ItemDetail = () => {
         .then(getNotes)
     }
 
+    const editnote = (event) => {
+        return history.push(`../editnote/${event.target.id}`)
+    }
+
+
     return (
         <>
-            <form>
-                <label htmlFor="description">Item Description:
-                    <input type="text"
+            <form className="detail-form">
+                <label  
+                className="detail input-label"
+                htmlFor="description">Item Description:
+                    <input className="input-field" type="text"
                         placeholder="short description/name"
                         id="name"
                         onChange={handlestate}
                         defaultValue={theItem.name}
                     ></input>
                 </label>
-
-                <p>This item will cost you {(Math.round(theItem.hoursNeeded * 100) / 100).toFixed(2)} hours of work</p>
-
-                <label htmlFor="buydifficulty"> How difficult will this be to purchase?:
-                    <select name="category"
+                <div className="costAnalysis input-field">
+                <p>This item will cost you {(Math.round(theItem.hoursNeeded * 100) / 100).toFixed(2)} hours of work!</p>
+                </div>
+                <label className="detail input-label" htmlFor="buydifficulty"> How difficult will this be to purchase?:
+                    <select className="input-field" name="category"
                         onChange={handlestate}
                         id="buydifficultyId">
                         <option value="0">Difficulty</option>
@@ -109,8 +113,8 @@ export const ItemDetail = () => {
                     </select>
                 </label>
 
-                <label htmlFor="itemType">Category:
-                    <select name="category"
+                <label className="detail input-label" htmlFor="itemType">Category:
+                    <select className="input-field" name="category"
                         onChange={handlestate}
                         id="itemtypeId"
                     >
@@ -127,18 +131,18 @@ export const ItemDetail = () => {
                         }
                     </select>
                 </label>
-                <label htmlFor="price">Item Cost:
-                    <input type="number"
+                <label className="detail input-label" htmlFor="price">Item Cost:
+                    <input className="input-field" type="number"
                         placeholder="cost of item"
                         id="price"
                         onChange={handlestate}
                         defaultValue={theItem.price}
                     ></input>
                 </label>
-                <label htmlFor="want">Is this a want or need? :
-                    <div className="radio"
+                <label className="detail input-label" htmlFor="want">Is this a want or need?
+                    <div className="radio input-field"
                     >
-                        <input
+                        <input 
                             onChange={purchased}
                             type="radio"
                             name="wantradio"
@@ -159,8 +163,8 @@ export const ItemDetail = () => {
                     </div>
                 </label>
 
-                <label htmlFor="purchased">Already Purchased?
-                    <div>
+                <label className="detail input-label" htmlFor="purchased">Already Purchased?
+                    <div className="input-field">
                         {
                             theItem.purchased? <input type="checkbox" id="purchased" name="purchased" checked
                             onChange={purchased}>
@@ -170,18 +174,23 @@ export const ItemDetail = () => {
                         }
                     </div>
                 </label>
-
-                <button onClick={UpdateItem}>Save</button>
-                <button onClick={deletetheItem}>Delete</button>
-                <Link className="navbar__link" to="/shoppinglist"><button>Close</button></Link>
-
+                <div className="buttons">
+                <button className="action-buttondetail" onClick={UpdateItem}>Save</button>
+                <button className="action-buttondetail" onClick={deletetheItem}>Delete</button>
+                <Link className="navbar__link" to="/shoppinglist"><button className="action-buttondetail">Close</button></Link>
+                </div>
             </form>
             <div>
                 Notes: 
                 {
                 notes.map(each => {
                     if (each.userItemsId === parseInt(itemId)) {
-                        return <div key={each.id}>{each.description} <button id={each.id} onClick={removenote}>remove note </button></div>
+                        return <div key={each.id}>{each.description} 
+                        <button id={each.id} onClick={removenote}>remove note </button>
+                        <button id={each.id} onClick={editnote}>Edit note </button>
+                        </div>
+                    } else {
+                        return ""
                     }
                 })
                 }

@@ -3,6 +3,11 @@ import { Link } from "react-router-dom"
 import "./NavBar.css"
 
 export const NavBar = (props) => {
+
+    const logout = () => {
+        localStorage.removeItem("ThingCost_customer")
+    }
+
     return (
         <ul className="navbar">
             <li className="navbar__item active">
@@ -16,6 +21,9 @@ export const NavBar = (props) => {
             </li>
             <li className="navbar__item active">
                 <Link className="navbar__link" to="/myprofile">My Profile</Link>
+            </li>
+            <li className="navbar__item active">
+                <Link className="navbar__link" to="" onClick={logout}>Logout</Link>
             </li>
         </ul>
     )

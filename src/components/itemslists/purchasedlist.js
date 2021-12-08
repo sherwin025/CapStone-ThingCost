@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect} from "react";
 import { useHistory } from "react-router";
 import { ItemContext } from "./ListProvider";
 
 export const PurchasedList = () => {
-    const { items, getItems, addItem, getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
+    const { items, getItems, deleteItem, getNotes, notes, deleteNote } = useContext(ItemContext)
 const history = useHistory()
 
     useEffect(() => {
@@ -11,10 +11,17 @@ const history = useHistory()
         .then(getNotes)
     }, [])
 
-    const purchasedItems = () => {
-        const purchases = items?.filter(each=>{return each.purchased === true })
-        const mypurchased = purchases.filter(each=>{return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
-        return mypurchased
+    const purchasedwants = () => {
+        const notpurchases = items.filter(each => { return each.purchased === true})
+        const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
+        const notmypurchaseswants = mynotpurchased.filter(each=>{return each.need === false})
+        return notmypurchaseswants
+    }
+    const purchasedneeds = () => {
+        const notpurchases = items.filter(each => { return each.purchased === true})
+        const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
+        const notmypurchasesneeds = mynotpurchased.filter(each=>{return each.need === true})
+        return notmypurchasesneeds
     }
 
     const redirect = (id) => {
@@ -28,14 +35,17 @@ const history = useHistory()
         });
         
         return deleteItem(parseInt(itemId))
-        .then(history.push("./"))
+        .then(getItems())
     }
 
     return (
         <>
+        <div>
+            Wants:
             {
-                purchasedItems().map(each => <div key={each.id}>
+                purchasedwants().map(each => <div key={each.id}>
                     <div>{each.name}</div>
+                    <div>Work Hours: {each.hoursNeeded.toFixed(2)}</div>
                     <div>
                     <button onClick={()=>{
                             redirect(each.id)
@@ -44,6 +54,22 @@ const history = useHistory()
                     </div>
                 </div>)
             }
+            Needs:
+            {
+                purchasedneeds().map(each => <div key={each.id}>
+                    <div>{each.name}</div>
+                    <div>Work Hours: {each.hoursNeeded.toFixed(2)}</div>
+                    <div>
+                    <button onClick={()=>{
+                            redirect(each.id)
+                        }}>Edit</button>
+                        <button  type="button" onClick={()=>deletetheItem(each.id)}>Delete</button>
+                    </div>
+                </div>)
+            }
+
+        </div>
+            
         </>
     )
 }

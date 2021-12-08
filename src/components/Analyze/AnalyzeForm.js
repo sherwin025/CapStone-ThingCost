@@ -1,8 +1,9 @@
-import react, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useContext } from "react/cjs/react.development"
-import { ItemContext } from "../itemslists/ListProvider"
 import { UserItemContext } from "./FormProvider"
 import { useHistory } from "react-router-dom"
+import { UserContext } from "../profile/UserProvider"
+import "./AnalyzeForm.css"
 
 export const AnalyzeForm = () => {
     const [item, setitem] = useState({
@@ -12,15 +13,14 @@ export const AnalyzeForm = () => {
         need: null
     })
     const { itemtypes, getalltypes } = useContext(UserItemContext)
-    const { addItem } = useContext(ItemContext)
     const history = useHistory()
     const [user, setuser] = useState({})
+    const { getUsersById} = useContext(UserContext)
 
     useEffect(() => {
         getalltypes()
-        fetch(`http://localhost:8088/users/${localStorage.getItem("ThingCost_customer")}`)
-        .then(res=>res.json())
-        .then(setuser)
+        getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
+        .then(res =>setuser(res))
     }, [])
 
     const handlestate = (event) => {
@@ -62,17 +62,18 @@ export const AnalyzeForm = () => {
 
     return (
         <>
-            <form>
-                <label htmlFor="description">Item Description:
-                    <input type="text"
+            <form className="analyze_form">
+                <label className="analyze input-label" htmlFor="description">Item Description
+                    <input className="input-field" type="text"
                         placeholder="short description/name"
                         id="name"
                         onChange={handlestate}
                     ></input>
 
                 </label>
-                <label htmlFor="itemType">Category:
-                    <select name="category"
+                <label className="analyze input-label" htmlFor="itemType">Category
+                    <select className="input-field"
+                    name="category"
                         onChange={handlestate}
                         id="itemtypeId">
                         <option value="0"> Choose a category</option>
@@ -83,14 +84,16 @@ export const AnalyzeForm = () => {
                         }
                     </select>
                 </label>
-                <label htmlFor="price">Item Cost:
-                    <input type="number"
+                <label className="analyze input-label" htmlFor="price">Item Cost
+                    <input
+                    className="input-field"
+                    type="number"
                         placeholder="cost of item"
                         id="price"
                         onChange={handlestate}
                     ></input>
                 </label>
-                <label htmlFor="want">Is this a want or need? :
+                <label className="analyze input-label" htmlFor="want">Is this a want or need?
                     <div className="radio"
                     >
                         <input
@@ -112,10 +115,14 @@ export const AnalyzeForm = () => {
 
                     </div>
                 </label>
+                <div className="analyzebuttons">
                 <button
+                className="action-button"
                     type="button"
-                    onClick={createItem}>Analyze</button>
-                <button>Clear</button>
+                    onClick={createItem}>&nbsp;Analyze&nbsp;</button>
+                <button
+                className="action-button">Clear</button>
+                </div>
             </form>
         </>
     )

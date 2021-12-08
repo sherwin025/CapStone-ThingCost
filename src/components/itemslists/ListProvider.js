@@ -1,4 +1,4 @@
-import react, { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
 
 export const ItemContext = createContext()
 
@@ -36,6 +36,12 @@ export const ItemProvider = (props) => {
                 .then(res => res.json())
     }
 
+    const getNotesById = id => {
+        const theId = parseInt(id)
+        return fetch(`http://localhost:8088/useritemsnotes/${theId}`)
+                .then(res => res.json())
+    }
+
     const deleteItem = itemId => {
         return fetch(`http://localhost:8088/useritems/${itemId}`, {
             method: "DELETE"
@@ -60,6 +66,17 @@ export const ItemProvider = (props) => {
             .then(res => res.json())
     }
 
+    const updateNote = item => {
+        return fetch(`http://localhost:8088/useritemsnotes/${item.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(item)
+        })
+            .then(res=>res.json())
+            .then(getNotes)
+    }
 
     const updateItem = item => {
         return fetch(`http://localhost:8088/useritems/${item.id}`, {
@@ -69,12 +86,13 @@ export const ItemProvider = (props) => {
             },
             body: JSON.stringify(item)
         })
+            .then(res=>res.json())
             .then(getItems)
     }
 
     return (
         <ItemContext.Provider value={{
-            items, getItems, addItem, getItemById, deleteItem, updateItem, getNotes, notes, deleteNote, addNote
+            items, getItems, addItem, getItemById, deleteItem, updateItem, getNotes, notes, deleteNote, addNote, getNotesById, updateNote
         }}>
             {props.children}
         </ItemContext.Provider>

@@ -1,15 +1,16 @@
-import react, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { useHistory } from "react-router"
 import { useState } from "react/cjs/react.development"
+import { UserContext } from "./UserProvider"
 
 export const MyProfile = () => {
     const [user, setuser] = useState({})
     const history = useHistory()
+    const {getUsersById, updateUser} = useContext(UserContext)
 
     useEffect(() => {
-        return fetch(`http://localhost:8088/users/${localStorage.getItem("ThingCost_customer")}`)
-            .then(res => res.json())
-            .then(setuser)
+        getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
+        .then(setuser)
     }, [])
 
     const handlestate = (event) => {
@@ -18,20 +19,15 @@ export const MyProfile = () => {
         setuser(copy)
     }
 
-    const updateUser = () => {
+    const updatetheUser = () => {
         const copy = {
+            id: user.id,
             name: user.name,
             email: user.email,
             hourlySalary: parseInt(user.hourlySalary)
         }
 
-        return fetch(`http://localhost:8088/users/${user.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(copy)
-        })
+        return updateUser(copy)
         .then(history.push("./shoppinglist"))
 
     }
@@ -68,7 +64,7 @@ export const MyProfile = () => {
 
                         <button
                             type="button"
-                            onClick={updateUser}>Update</button>
+                            onClick={updatetheUser}>Update</button>
                     </form>
             }
         </>
