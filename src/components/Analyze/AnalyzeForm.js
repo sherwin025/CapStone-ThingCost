@@ -15,12 +15,13 @@ export const AnalyzeForm = () => {
     const { itemtypes, getalltypes } = useContext(UserItemContext)
     const history = useHistory()
     const [user, setuser] = useState({})
-    const { getUsersById} = useContext(UserContext)
+    const { getUsersById } = useContext(UserContext)
+    const [newtype, setnewtype] = useState({})
 
     useEffect(() => {
         getalltypes()
         getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
-        .then(res =>setuser(res))
+            .then(res => setuser(res))
     }, [])
 
     const handlestate = (event) => {
@@ -29,35 +30,73 @@ export const AnalyzeForm = () => {
         setitem(copy)
     }
 
+    const handletypestate = (event) => {
+        const copy = { ...newtype }
+        copy[event.target.id] = event.target.value
+        setnewtype(copy)
+    }
+
     const createItem = () => {
 
-        if (item.price != null && item.itemtypeId !== null && item.name !== null && item.need !== null) {
-            const copy = {
-                itemtypeId: parseInt(item.itemtypeId),
-                price: parseInt(item.price),
-                name: item.name,
-                need: item.need === "true",
-                userId: parseInt(localStorage.getItem("ThingCost_customer")),
-                hoursNeeded: parseInt(item.price) / user.hourlySalary, 
-                buydifficulty: 0,
-                purchased: false
-            }
-            
-            return fetch("http://localhost:8088/useritems", {
+        if (newtype) {
+            return fetch("http://localhost:8088/itemtypes", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(copy)
+                body: JSON.stringify(newtype)
             })
                 .then(res => res.json())
-                .then(res => history.push(`./shoppinglist/${res.id}`))
-
-
+                .then((res) => {
+                    if (item.price != null && item.name !== null && item.need !== null) {
+                        const copy = {
+                            itemtypeId: res.id,
+                            price: parseInt(item.price),
+                            name: item.name,
+                            need: item.need === "true",
+                            userId: parseInt(localStorage.getItem("ThingCost_customer")),
+                            hoursNeeded: parseInt(item.price) / user.hourlySalary,
+                            buydifficulty: 0,
+                            purchased: false
+                        }
+                        return fetch("http://localhost:8088/useritems", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(copy)
+                        })
+                            .then(res => res.json())
+                            .then(res => history.push(`./shoppinglist/${res.id}`))
+                    } else {
+                        alert("incomplete item form")
+                    }
+                })
         } else {
-            alert("incomplete item form")
+            if (item.price != null && item.itemtypeId !== null && item.name !== null && item.need !== null) {
+                const copy = {
+                    itemtypeId: parseInt(item.itemtypeId),
+                    price: parseInt(item.price),
+                    name: item.name,
+                    need: item.need === "true",
+                    userId: parseInt(localStorage.getItem("ThingCost_customer")),
+                    hoursNeeded: parseInt(item.price) / user.hourlySalary,
+                    buydifficulty: 0,
+                    purchased: false
+                }
+                return fetch("http://localhost:8088/useritems", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(copy)
+                })
+                    .then(res => res.json())
+                    .then(res => history.push(`./shoppinglist/${res.id}`))
+            } else {
+                alert("incomplete item form")
+            }
         }
-
     }
 
     return (
@@ -72,22 +111,30 @@ export const AnalyzeForm = () => {
 
                 </label>
                 <label className="analyze input-label" htmlFor="itemType">Category
-                    <select className="input-field"
-                    name="category"
-                        onChange={handlestate}
-                        id="itemtypeId">
-                        <option value="0"> Choose a category</option>
-                        {
-                            itemtypes.map(each =>
-                                <option key={each.id} value={each.id}>{each.description}</option>
-                            )
-                        }
-                    </select>
+                    {item.itemtypeId === null || item.itemtypeId >= 0 ?
+                        <select className="input-field"
+                            name="category"
+                            onChange={handlestate}
+                            id="itemtypeId">
+                            <option value="0"> Choose a category</option>
+                            {
+                                itemtypes.map(each =>
+                                    <option key={each.id} value={each.id}>{each.description}</option>
+                                )
+                            }
+                            <option key={-1} value={-1}>Create new type</option>
+                        </select>
+                        : <input className="input-field" type="text"
+                            placeholder="type description"
+                            id="description"
+                            onChange={handletypestate}
+                        ></input>
+                    }
                 </label>
                 <label className="analyze input-label" htmlFor="price">Item Cost
                     <input
-                    className="input-field"
-                    type="number"
+                        className="input-field"
+                        type="number"
                         placeholder="cost of item"
                         id="price"
                         onChange={handlestate}
@@ -116,12 +163,12 @@ export const AnalyzeForm = () => {
                     </div>
                 </label>
                 <div className="analyzebuttons">
-                <button
-                className="action-button"
-                    type="button"
-                    onClick={createItem}>&nbsp;Analyze&nbsp;</button>
-                <button
-                className="action-button">Clear</button>
+                    <button
+                        className="action-button"
+                        type="button"
+                        onClick={createItem}>&nbsp;Analyze&nbsp;</button>
+                    <button
+                        className="action-button">Clear</button>
                 </div>
             </form>
         </>

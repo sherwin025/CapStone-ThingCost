@@ -162,7 +162,7 @@ export const ItemDetail = () => {
                         Need
                     </div>
                 </label>
-
+                        {/* add purchase by date function  */}
                 <label className="detail input-label" htmlFor="purchased">Already Purchased?
                     <div className="input-field">
                         {
