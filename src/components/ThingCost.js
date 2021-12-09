@@ -5,6 +5,7 @@ import { NavBar } from "./nav/NavBar";
 import { Login } from "./auth/Login";
 import { Register } from "./auth/Register";
 import "./ThingCost.css";
+import { Link } from "react-router-dom";
 
 export const ThingCost = () => (
     <>
@@ -13,7 +14,7 @@ export const ThingCost = () => (
                 if (localStorage.getItem("ThingCost_customer")) {
                     return (
                         <>
-                            <h1>ThingCost</h1>
+                            <a href="/"><h1>ThingCost</h1></a>
                             <NavBar />
                             <ApplicationViews />
                         </>
