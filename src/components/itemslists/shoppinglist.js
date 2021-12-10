@@ -2,9 +2,11 @@ import { useContext, useEffect } from "react";
 import { useHistory } from "react-router";
 import { ItemContext } from "./ListProvider";
 
+
 export const ShoppingList = () => {
     const { items, getItems, getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
     const history = useHistory()
+
 
 
     useEffect(() => {
