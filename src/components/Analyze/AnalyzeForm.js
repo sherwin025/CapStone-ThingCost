@@ -12,14 +12,16 @@ export const AnalyzeForm = () => {
         name: null,
         need: null
     })
-    const { itemtypes, getalltypes } = useContext(UserItemContext)
+    const { useritemtypes, getallusertypes } = useContext(UserItemContext)
     const history = useHistory()
     const [user, setuser] = useState({})
     const { getUsersById } = useContext(UserContext)
-    const [newtype, setnewtype] = useState({})
+    const [newtype, setnewtype] = useState({
+        description: null
+    })
 
     useEffect(() => {
-        getalltypes()
+        getallusertypes(parseInt(localStorage.getItem("ThingCost_customer")))
         getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
             .then(res => setuser(res))
     }, [])
@@ -33,13 +35,14 @@ export const AnalyzeForm = () => {
     const handletypestate = (event) => {
         const copy = { ...newtype }
         copy[event.target.id] = event.target.value
+        copy.userId = parseInt(localStorage.getItem("ThingCost_customer"))
         setnewtype(copy)
     }
 
     const createItem = () => {
 
-        if (newtype) {
-            return fetch("http://localhost:8088/itemtypes", {
+        if (newtype.description != null) {
+            return fetch("http://localhost:8088/useritemtypes", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -50,7 +53,7 @@ export const AnalyzeForm = () => {
                 .then((res) => {
                     if (item.price != null && item.name !== null && item.need !== null) {
                         const copy = {
-                            itemtypeId: res.id,
+                            useritemtypeId: res.id,
                             price: parseInt(item.price),
                             name: item.name,
                             need: item.need === "true",
@@ -118,7 +121,7 @@ export const AnalyzeForm = () => {
                             id="itemtypeId">
                             <option value="0"> Choose a category</option>
                             {
-                                itemtypes.map(each =>
+                                useritemtypes.map(each =>
                                     <option key={each.id} value={each.id}>{each.description}</option>
                                 )
                             }

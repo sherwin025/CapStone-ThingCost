@@ -7,14 +7,14 @@ import "./ItemDetail.css"
 export const ItemDetail = () => {
     const { itemId } = useParams()
     const {getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
-    const { itemtypes, getalltypes, difficultys, getalldifficulties } = useContext(UserItemContext)
+    const { useritemtypes, getallusertypes, difficultys, getalldifficulties } = useContext(UserItemContext)
     const [theItem, setItem] = useState({})
     const history = useHistory()
 
     useEffect(() => {
         getItemById(parseInt(itemId))
             .then(res => setItem(res))
-            .then(getalltypes)
+            .then(getallusertypes(localStorage.getItem("ThingCost_customer")))
             .then(getalldifficulties)
             .then(getNotes)
     }, [itemId])
@@ -40,7 +40,7 @@ export const ItemDetail = () => {
     const UpdateItem = (event) => {
         const copy = {
             id: theItem.id,
-            itemtypeId: parseInt(theItem.itemtypeId),
+            useritemtypeId: parseInt(theItem.itemtypeId),
             price: parseInt(theItem.price),
             name: theItem.name,
             need: theItem.need,
@@ -120,7 +120,7 @@ export const ItemDetail = () => {
                     >
                         <option value="0"> Choose a category</option>
                         {
-                            itemtypes.map(type => {
+                            useritemtypes.map(type => {
                                 if (type.id === theItem.itemtypeId) {
                                     return <option key={type.id} value={type.id} selected>{type.description}</option>
                                 } else {
