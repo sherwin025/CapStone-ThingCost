@@ -10,39 +10,54 @@ import { NoteForm } from "./itemslists/newnoteform"
 import { UserProvider } from "./profile/UserProvider"
 import { WelcomePage } from "./Welcome/WelcomePage"
 import { EditNoteForm } from "./itemslists/editnoteform"
-
+import { Resources } from "./resources/Resourcelist"
+import { ResourceProvider } from "./resources/resourceprovider"
+import { RandomTip } from "./resources/Randomtip";
 
 export const ApplicationViews = () => {
     return (
         <>
-            <UserProvider>
-                <ItemProvider>
-                    <Route path="/analyze">
-                        <AnalyzeForm />
-                    </Route>
-                    <Route exact path="/">
-                        <WelcomePage />
-                    </Route>
-                    <Route exact path="/shoppinglist">
-                        <ShoppingList />
-                    </Route>
-                    <Route path="/purchasedlist">
-                        <PurchasedList />
-                    </Route>
-                    <Route path="/myprofile">
-                        <MyProfile />
-                    </Route>
-                    <Route path="/shoppinglist/:itemId(\d+)">
-                        <ItemDetail />
-                    </Route>
-                    <Route path="/newnote/:ItemnoteId(\d+)">
-                        <NoteForm />
-                    </Route>
-                    <Route path="/editnote/:editnoteId(\d+)">
-                        <EditNoteForm />
-                    </Route>
-                </ItemProvider>
-            </UserProvider>
+            <ResourceProvider>
+                <UserProvider>
+                    <ItemProvider>
+                        <Route path="/analyze">
+                            <RandomTip />
+                            <AnalyzeForm />
+                        </Route>
+                        <Route exact path="/">
+                            <RandomTip />
+                            <WelcomePage />
+                        </Route>
+                        <Route exact path="/shoppinglist">
+                            <RandomTip />
+                            <ShoppingList />
+                        </Route>
+                        <Route path="/purchasedlist">
+                            <RandomTip />
+                            <PurchasedList />
+                        </Route>
+                        <Route path="/myprofile">
+                            <RandomTip />
+                            <MyProfile />
+                        </Route>
+                        <Route path="/resources">
+                            <Resources />
+                        </Route>
+                        <Route path="/shoppinglist/:itemId(\d+)">
+                            <RandomTip />
+                            <ItemDetail />
+                        </Route>
+                        <Route path="/newnote/:ItemnoteId(\d+)">
+                            <RandomTip />
+                            <NoteForm />
+                        </Route>
+                        <Route path="/editnote/:editnoteId(\d+)">
+                            <RandomTip />
+                            <EditNoteForm />
+                        </Route>
+                    </ItemProvider>
+                </UserProvider>
+            </ResourceProvider>
         </>
     )
 }

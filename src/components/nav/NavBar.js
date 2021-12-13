@@ -23,6 +23,9 @@ export const NavBar = (props) => {
                 <Link className="navbar__link" to="/myprofile">My Profile</Link>
             </li>
             <li className="navbar__item active">
+                <Link className="navbar__link" to="/resources" >Resources</Link>
+            </li>
+            <li className="navbar__item active">
                 <Link className="navbar__link" to="" onClick={logout}>Logout</Link>
             </li>
         </ul>

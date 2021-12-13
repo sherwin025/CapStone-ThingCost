@@ -47,7 +47,8 @@ export const ItemDetail = () => {
             userId: parseInt(localStorage.getItem("ThingCost_customer")),
             hoursNeeded: theItem.hoursNeeded,
             buydifficultyId: parseInt(theItem.buydifficultyId),
-            purchased: theItem.purchased
+            purchased: theItem.purchased,
+            purchaseby: theItem.purchaseby
         }
         return updateItem(copy)
         .then(history.push("./"))
@@ -162,7 +163,13 @@ export const ItemDetail = () => {
                         Need
                     </div>
                 </label>
-                        {/* add purchase by date function  */}
+                <label className="detail input-label" htmlFor="dateneeded">{theItem.need? "needed": "wanted"} by:
+                <input className="input-field" type="date"
+                        id="purchaseby"
+                        onChange={handlestate}
+                        defaultValue={theItem.purchaseby}
+                    ></input>
+                </label>
                 <label className="detail input-label" htmlFor="purchased">Already Purchased?
                     <div className="input-field">
                         {

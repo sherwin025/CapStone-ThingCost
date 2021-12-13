@@ -36,7 +36,7 @@ export const UserItemProvider = (props) => {
 
     const  getallusertypes  = (id) => {
         const theId = parseInt(id)
-        return fetch(`http://localhost:8088/useritemtypes?_userId=${theId}`)
+        return fetch(`http://localhost:8088/useritemtypes?userId=${theId}`)
             .then(res => res.json())
             .then(setuseritemtypes)
 }

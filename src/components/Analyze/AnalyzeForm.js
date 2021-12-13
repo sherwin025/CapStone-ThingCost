@@ -59,7 +59,7 @@ export const AnalyzeForm = () => {
                             need: item.need === "true",
                             userId: parseInt(localStorage.getItem("ThingCost_customer")),
                             hoursNeeded: parseInt(item.price) / user.hourlySalary,
-                            buydifficulty: 0,
+                            buydifficultyId: 0,
                             purchased: false
                         }
                         return fetch("http://localhost:8088/useritems", {
@@ -84,7 +84,7 @@ export const AnalyzeForm = () => {
                     need: item.need === "true",
                     userId: parseInt(localStorage.getItem("ThingCost_customer")),
                     hoursNeeded: parseInt(item.price) / user.hourlySalary,
-                    buydifficulty: 0,
+                    buydifficultyId: 0,
                     purchased: false
                 }
                 return fetch("http://localhost:8088/useritems", {

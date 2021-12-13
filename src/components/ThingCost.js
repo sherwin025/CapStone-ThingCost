@@ -7,6 +7,7 @@ import { Register } from "./auth/Register";
 import "./ThingCost.css";
 import { UserItemProvider } from "./Analyze/FormProvider";
 
+
 export const ThingCost = () => (
     <>
         <UserItemProvider>
