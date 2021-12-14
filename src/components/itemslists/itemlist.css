@@ -1,0 +1,56 @@
+.list {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.indItem {
+    border: 5px solid black;
+    box-sizing: border-box;
+    padding: 2rem 1rem 1rem 1rem;
+    margin: 10px ;
+    border-radius: 10%;
+    background-color: white;
+    position: center;
+    min-width: 300px;
+    max-width: 300px;
+}
+
+.easy {
+    background-color: rgb(143, 209, 143) ;
+}
+
+.hard {
+    background-color: rgb(233, 54, 54);
+}
+
+.med {
+    background-color: rgb(233, 233, 102);
+}
+
+.pagetitle {
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    color:grey;
+}
+
+.title {
+    color:grey;
+    text-align: center;
+    font-weight: bold;
+}
+
+.difficultid {
+    font-weight: 200;
+}
+
+.itemname {
+    font-size: 25px;
+    font-weight: bold;
+    color:rgb(25, 66, 66)
+}
+
+.workhours {
+    color:rgb(0, 3, 3);
+    font-weight: 600;
+}

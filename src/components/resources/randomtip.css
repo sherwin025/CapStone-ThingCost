@@ -1,0 +1,10 @@
+.tip {
+    background-color: rgb(153, 169, 172);
+    width: fit-content;
+    padding: 20px 50px;
+    border-radius: 50px;
+    text-align: center;
+    margin: 30px auto;
+    font-size: 20px;
+
+}

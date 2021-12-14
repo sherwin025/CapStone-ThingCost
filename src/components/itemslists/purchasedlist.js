@@ -1,7 +1,8 @@
 import { useContext, useEffect } from "react";
 import { useHistory } from "react-router";
 import { ItemContext } from "./ListProvider";
-
+import "./itemlist.css"
+import "./ItemDetail.css"
 
 export const PurchasedList = () => {
     const { items, getItems, deleteItem, getNotes, notes, deleteNote } = useContext(ItemContext)
@@ -42,35 +43,40 @@ export const PurchasedList = () => {
     }
 
     return (
-        <>
-            <div>
-                Wants:
-                {
-                    purchasedwants().map(each => <div key={each.id}>
-                        <div>{each.name}</div>
-                        <div>Work Hours: {each.hoursNeeded.toFixed(2)}</div>
-                        <div>
-                            <button onClick={() => {
-                                redirect(each.id)
-                            }}>Edit</button>
-                            <button type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
-                        </div>
-                    </div>)
-                }
-                Needs:
-                {
-                    purchasedneeds().map(each => <div key={each.id}>
-                        <div>{each.name}</div>
-                        <div>Work Hours: {each.hoursNeeded.toFixed(2)}</div>
-                        <div>
-                            <button onClick={() => {
-                                redirect(each.id)
-                            }}>Edit</button>
-                            <button type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
-                        </div>
-                    </div>)
-                }
-
+        <><div className="pagetitle">Purchased List</div>
+            <div className="list">
+            <div className="needs">
+                    <div class="title">Needs:</div>
+                    {
+                        purchasedneeds().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div className="itemname">{each.name}</div>
+                            <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
+                            <div className="buttons">
+                                <button className="action-buttondetail buttonsmall" onClick={() => {
+                                    redirect(each.id)
+                                }}>Edit</button>
+                                <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
+                            </div>
+                            <div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"} </div>
+                        </div>)
+                    }
+                </div>
+                <div className="wants">
+                    <div class="title">Wants:</div>
+                    {
+                        purchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div className="itemname">{each.name}</div>
+                            <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
+                            <div className="buttons">
+                                <button  className="action-buttondetail buttonsmall" onClick={() => {
+                                    redirect(each.id)
+                                }}>Edit</button>
+                                <button className="action-buttondetail buttonsmall"type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
+                            </div>
+                            <div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"} </div>
+                        </div>)
+                    }
+                </div>
             </div>
 
         </>

@@ -72,5 +72,36 @@ body {
 
 }
 
+.details {
+	display: flex; 
+	justify-content: center;
+}
 
 
+.buttonsmall {
+	font-size:  12px !important;
+	padding: 2px !important;
+	
+}
+
+.buttonmedium {
+	font-size:  20px !important;
+	padding: 5px !important;
+	
+}
+
+.indnote {
+	padding:  0px 50px;
+	font-size: 20px;
+	
+}
+
+.theform {
+	flex: 10
+}
+
+.thenotes {
+	text-align: center;
+	justify-content: center;
+	position: relative
+}

@@ -11,22 +11,22 @@ export const NavBar = (props) => {
     return (
         <ul className="navbar">
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/analyze">Analyze a Purchase</Link>
+                <Link className="navbar__item" to="/analyze">Analyze a Purchase</Link>
             </li>
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/shoppinglist">Shopping List</Link>
+                <Link className="navbar__item" to="/shoppinglist">Shopping List</Link>
             </li>
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/purchasedlist">Purchases</Link>
+                <Link className="navbar__item" to="/purchasedlist">Purchases</Link>
             </li>
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/myprofile">My Profile</Link>
+                <Link className="navbar__item" to="/myprofile">My Profile</Link>
             </li>
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/resources" >Resources</Link>
+                <Link className="navbar__item" to="/resources" >Resources</Link>
             </li>
             <li className="navbar__item active">
-                <Link className="navbar__link" to="" onClick={logout}>Logout</Link>
+                <Link className="navbar__item" to="" onClick={logout}>Logout</Link>
             </li>
         </ul>
     )

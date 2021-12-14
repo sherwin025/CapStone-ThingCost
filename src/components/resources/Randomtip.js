@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-
+import "./randomtip.css"
 
 export const RandomTip = () => {
     const [tips, settips] = useState([])
@@ -24,8 +24,11 @@ export const RandomTip = () => {
     }
 
     return (<>
+    <div className="tip">
         {
-            tipIds().desciption
+            tipIds().description
         }
+
+    </div>
     </>)
 }

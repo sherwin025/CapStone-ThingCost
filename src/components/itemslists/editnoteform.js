@@ -2,20 +2,20 @@ import { useContext, useEffect } from "react"
 import { useHistory, useParams } from "react-router"
 import { useState } from "react/cjs/react.development"
 import { ItemContext } from "./ListProvider"
-
+import "./ItemDetail.css"
 export const EditNoteForm = () => {
     const [note, setnote] = useState({})
-    const {editnoteId} = useParams()
+    const { editnoteId } = useParams()
     const history = useHistory()
-    const {getNotesById, updateNote} = useContext(ItemContext)
+    const { getNotesById, updateNote } = useContext(ItemContext)
 
-    useEffect(()=>{
+    useEffect(() => {
         getNotesById(editnoteId)
-        .then(setnote)
-    },[editnoteId])
-    
-    const handlestate = (event)=> {
-        const copy = {...note}
+            .then(setnote)
+    }, [editnoteId])
+
+    const handlestate = (event) => {
+        const copy = { ...note }
         copy[event.target.id] = event.target.value
         setnote(copy)
     }
@@ -28,20 +28,22 @@ export const EditNoteForm = () => {
         }
 
         updateNote(copy)
-        .then(history.push(`/shoppinglist/${note.userItemsId}`))
+            .then(history.push(`/shoppinglist/${note.userItemsId}`))
 
     }
     return <>
-                <form>
-                <label htmlFor="description">Note:
-                    <input type="text"
-                        id="description"
-                        onChange={handlestate}
-                        defaultValue={note.description}
-                    ></input>
-                </label>
-                <button type="button" 
+        <form className="detail-form">
+            <label htmlFor="description" className="detail input-label" >Note:
+                <input
+                    className="input-field"
+                    type="text"
+                    id="description"
+                    onChange={handlestate}
+                    defaultValue={note.description}
+                ></input>
+            </label>
+            <button className="action-buttondetail buttonmedium" type="button"
                 onClick={saveNote}>Save Note</button>
-            </form>
+        </form>
     </>
 }

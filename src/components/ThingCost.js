@@ -16,7 +16,6 @@ export const ThingCost = () => (
                     if (localStorage.getItem("ThingCost_customer")) {
                         return (
                             <>
-                                <a href="/"><h1>ThingCost</h1></a>
                                 <NavBar />
                                 <ApplicationViews />
                             </>

@@ -2,9 +2,23 @@
     display: flex;
     flex-wrap: nowrap;
     justify-content: left;
+    padding-top: .5rem;
+    display: flex;
+    justify-content: center;
 }
 
 .navbar__item {
     flex-basis: 20%;
     list-style-type: none;
+    font: inherit;
+	font-size: 1.2rem;
+	padding: 1em;
+    margin: .25em 1px;
+	width: 100%;
+	font-weight: 500;
+	background-color: #aca0a0;
+	border-radius: 20px;
+	color: #FFF;
+	border: 0;
+    text-align: center;
 }
