@@ -29,7 +29,7 @@ export const PurchasedList = () => {
     }
 
     const redirect = (id) => {
-        return history.push(`./shoppinglist/${parseInt(id)}`)
+        return history.push(`./purchasedlist/${parseInt(id)}`)
     }
 
     const deletetheItem = (itemId) => {

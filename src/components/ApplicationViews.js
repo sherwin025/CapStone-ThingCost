@@ -32,7 +32,7 @@ export const ApplicationViews = () => {
                             <RandomTip />
                             <ShoppingList />
                         </Route>
-                        <Route path="/purchasedlist">
+                        <Route exact pacepath="/purchasedlist">
                             <RandomTip />
                             <PurchasedList />
                         </Route>
@@ -44,6 +44,10 @@ export const ApplicationViews = () => {
                             <Resources />
                         </Route>
                         <Route path="/shoppinglist/:itemId(\d+)">
+                            <RandomTip />
+                            <ItemDetail />
+                        </Route>
+                        <Route path="/purchasedlist/:itemId(\d+)">
                             <RandomTip />
                             <ItemDetail />
                         </Route>
