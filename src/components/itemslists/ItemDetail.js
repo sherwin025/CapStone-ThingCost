@@ -41,7 +41,7 @@ export const ItemDetail = () => {
     const UpdateItem = (event) => {
         const copy = {
             id: theItem.id,
-            useritemtypeId: parseInt(theItem.itemtypeId),
+            useritemtypeId: parseInt(theItem.useritemtypeId),
             price: parseInt(theItem.price),
             name: theItem.name,
             need: theItem.need,
@@ -85,7 +85,7 @@ export const ItemDetail = () => {
         <><div className="details">
             <form className="detail-form theform">
                 <label
-                    className="detail input-label"
+                    className="detail input-label header"
                     htmlFor="description">Item Description:
                     <input className="input-field" type="text"
                         placeholder="short description/name"
@@ -123,7 +123,7 @@ export const ItemDetail = () => {
                         <option value="0"> Choose a category</option>
                         {
                             useritemtypes.map(type => {
-                                if (type.id === theItem.itemtypeId) {
+                                if (type.id === theItem.useritemtypeId) {
                                     return <option key={type.id} value={type.id} selected>{type.description}</option>
                                 } else {
                                     return <option key={type.id} value={type.id}>{type.description}</option>
@@ -189,7 +189,7 @@ export const ItemDetail = () => {
                 </div>
             </form>
             <div className="detail-form thenotes">
-                <div className="detail input-label">Notes:</div>
+                <div className="detail input-label header">Notes:</div>
                 {
                     notes.map(each => {
                         if (each.userItemsId === parseInt(itemId)) {

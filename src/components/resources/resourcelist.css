@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
-.detail-form{
+.analyze_form {
     border: 5px solid black;
     box-shadow: 1px 1px 0px #999,
     2px 2px 0px #999,
@@ -9,22 +9,22 @@
     5px 5px 0px #999,
     6px 6px 0px #999;
     box-sizing: border-box;
-    max-width: 600px;
-    padding: 2rem 1rem 1rem 1rem;
+    max-width: 620px;
+    padding: 3rem 1.5rem;
     margin: auto;
     border-radius: 10%;
     background-color: white;
     position: center;
-
+    text-align: center;
 }
 
-.detail {
+.analyze {
     justify-content: center;
     display: flex;
     flex-direction: column;
 }
 
-.buttons {
+.analyzebuttons {
 padding-top: .5rem;
 display: flex;
 justify-content: center;
@@ -54,16 +54,11 @@ body {
 	padding: .25rem 0;
 }
 
-.costAnalysis {
-	font-weight: bold !important;
-	color: firebrick
-}
-
-.action-buttondetail {
+.action-button {
 	font: inherit;
 	font-size: 1.25rem;
-	padding: 1em;
-    margin: .25em 2px;
+	padding: .5em;
+    margin: .5em;
 	width: 100%;
 	font-weight: 500;
 	background-color: #a52a2a;
@@ -73,36 +68,56 @@ body {
 
 }
 
-.details {
-	display: flex; 
-	justify-content: center;
+.remove {
+    font: inherit;
+	font-size: 1.25rem;
+	padding: .1em;
+    margin: .5em;
+	font-weight: 500;
+	background-color: #a52a2a;
+	border-radius: 6px;
+	color: #FFF;
+	border: 0;
+    align-items: center;
 }
 
+.submit {
+    font: inherit;
+	font-size: 1.25rem;
+	padding: .1em;
+    margin: .5em;
+	width: 100%;
+	font-weight: 500;
+	background-color: #a52a2a;
+	border-radius: 6px;
+	color: #FFF;
+	border: 0;
 
-.buttonsmall {
-	font-size:  12px !important;
-	padding: 2px !important;
-	
 }
 
-.buttonmedium {
-	font-size:  20px !important;
-	padding: 5px !important;
-	
+.newsite {
+    
+    display: flex;
+    flex-direction: column;
 }
 
-.indnote {
-	padding:  0px 50px;
-	font-size: 20px;
-	
+.mapped {
+    display: flex;
+    justify-content: center;
 }
-
-.theform {
-	flex: 10
+.stateitem {
+    font: inherit;
+	font-size: 1.25rem;
+	padding: .5em;
+    margin: .5em;
+	width: 50%;
+	font-weight: 500;
+	background-color: #a52a2a;
+	border-radius: 6px;
+	color: #FFF;
+	border: 0;
+    margin-left: 140px;
 }
-
-.thenotes {
-	text-align: center;
-	justify-content: center;
-	position: relative
+.resourcecontain{
+	margin-bottom: 50px;
 }

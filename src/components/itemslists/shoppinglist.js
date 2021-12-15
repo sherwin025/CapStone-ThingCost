@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { ItemContext } from "./ListProvider";
 import "./itemlist.css"
@@ -7,6 +7,8 @@ import "./ItemDetail.css"
 export const ShoppingList = () => {
     const { items, getItems, getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
     const history = useHistory()
+    const [note, triggernote] = useState(false)
+    const [theitemid, settheitemid] = useState(0)
 
 
 
@@ -51,13 +53,40 @@ export const ShoppingList = () => {
             .then(getItems())
     }
 
+    const triggerthenotes = (id) => {
+        note ? triggernote(false) : triggernote(true)
+        settheitemid(id)
+    }
+
+    const Popup = (props) => {
+        return (<>
+            {
+                props.trigger ?
+                    <div className="popup">
+                        <div className="popup-inner">Item Notes:
+                            {
+                                notes.map((note) => {
+                                    if (note.userItemsId === props.id) {
+                                        return <li key={note.id}> {note.description} </li>
+                                    }
+                                })
+                            }
+                        </div>
+
+                        <button className="close-btn" onClick={() => props.setTrigger(false)}>close</button>
+                    </div> : ""
+            }
+        </>)
+    }
+
     return (
         <><div className="pagetitle">Shopping List</div>
             <div className="list">
                 <div className="needs">
-                    <div class="title">Needs:</div>
+                    <div className="title header">Needs:</div>
                     {
                         notpurchasedneeds().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
                             <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
                             <div className="buttons">
@@ -65,14 +94,18 @@ export const ShoppingList = () => {
                                 <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
                                 <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
                             </div>
-                            <div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"} </div>
+                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"}
+                            </div>
+                                <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
+                            </div>
                         </div>)
                     }
                 </div>
                 <div className="wants">
-                    <div class="title">Wants:</div>
+                    <div className="title header">Wants:</div>
                     {
                         notpurchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div>{each.purchaseby ? <div>Wanted By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
                             <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
                             <div className="buttons">
@@ -80,10 +113,16 @@ export const ShoppingList = () => {
                                 <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
                                 <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
                             </div>
-                            <div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"} </div>
+                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"}
+                            </div>
+                                <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
+                            </div>
                         </div>)
                     }
                 </div>
+                {
+                    <Popup id={theitemid} setTrigger={triggernote} trigger={note} />
+                }
             </div>
         </>
     )

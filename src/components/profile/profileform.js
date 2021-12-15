@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react"
-import { useHistory } from "react-router"
 import { useState } from "react/cjs/react.development"
 import { UserContext } from "./UserProvider"
 import { UserItemContext } from "../Analyze/FormProvider"
+import "./profileform.css"
 
 export const MyProfile = () => {
     const [user, setuser] = useState({})
@@ -52,10 +52,10 @@ export const MyProfile = () => {
             },
             body: JSON.stringify(thetype)
         })
-        .then(setnewtype(false))
-        .then(getUsersById(parseInt(localStorage.getItem("ThingCost_customer"))))
-        .then(setuser)
-        .then(getallusertypes(parseInt(localStorage.getItem("ThingCost_customer"))))
+            .then(setnewtype(false))
+            .then(getUsersById(parseInt(localStorage.getItem("ThingCost_customer"))))
+            .then(setuser)
+            .then(getallusertypes(parseInt(localStorage.getItem("ThingCost_customer"))))
     }
 
     const removetype = (evt) => {
@@ -73,74 +73,81 @@ export const MyProfile = () => {
 
     return (
         <>
+            <div className="maincontainer">
 
-            {
-                editprofile ?
-                    <div>
-                        <div>Name: {user.name}</div>
-                        <div>Email: {user.email}</div>
-                        <div>Hourly Earning: {user.hourlySalary}</div>
-                        <button onClick={() => seteditprofile(false)}>Edit Profile</button>
-                    </div> :
-                    <form>
-                        <label htmlFor="name">Name:
-                            <input type="text"
-                                placeholder="short description/name"
-                                id="name"
-                                onChange={handlestate}
-                                defaultValue={user.name}
-                            ></input>
-
-                        </label>
-                        <label htmlFor="email"> Email:
-                            <input type="text"
-                                defaultValue={user.email}
-                                id="email"
-                                onChange={handlestate}
-                            ></input>
-                        </label>
-
-                        <label htmlFor="hourlySalary"> Hourly Salary:
-                            <input type="number"
-                                defaultValue={user.hourlySalary}
-                                id="hourlySalary"
-                                onChange={handlestate}
-                            ></input>
-                        </label>
-
-                        <button
-                            type="submit"
-                            onClick={updatetheUser}>Update</button>
-                    </form>
-            }
-
-            <div>Your Item Types:
                 {
-                    edititem ?
-                        useritemtypes.map(each => {
-                            return <div key={each.id}>{each.description} </div>
-                        })
-                        :
-                        useritemtypes.map(each => {
-                            return <div key={each.id}>{each.description} <button onClick={removetype} id={each.id}>remove</button></div>
-                        })
-                }
-                <button onClick={() => changeeditstate()} >edit types</button>
-                <button onClick={() => changenewtype()}>add new type</button>
-            </div>
+                    editprofile ?
+                        <div className="analyze_form analyze">
+                            <div className="header input-label">Your Information</div>
+                            <div className="input-label">Name: {user.name}</div>
+                            <div className="input-label">Email: {user.email}</div>
+                            <div className="input-label">Hourly Earning: {user.hourlySalary}</div>
+                            <button className="analyzebuttons action-button" onClick={() => seteditprofile(false)}>Edit Profile</button>
+                        </div> :
+                        <form className="analyze_form analyze">
+                            <label className="input-label" htmlFor="name">Name:
+                                <input className="input-field" type="text"
+                                    placeholder="short description/name"
+                                    id="name"
+                                    onChange={handlestate}
+                                    defaultValue={user.name}
+                                ></input>
 
-            {
-                newtype ?
-                    <div>
-                        <input className="input-field" type="text"
-                            placeholder="type description"
-                            id="description"
-                            onChange={handletypestate}
-                        ></input>
-                        <button type="submit" onClick={submitnewtype}>submit</button>
-                    </div>
-                    : ""
-            }
+                            </label>
+                            <label className="input-label" htmlFor="email"> Email:
+                                <input className="input-field" type="text"
+                                    defaultValue={user.email}
+                                    id="email"
+                                    onChange={handlestate}
+                                ></input>
+                            </label>
+
+                            <label className="input-label" htmlFor="hourlySalary"> Hourly Salary:
+                                <input className="input-field" type="number"
+                                    defaultValue={user.hourlySalary}
+                                    id="hourlySalary"
+                                    onChange={handlestate}
+                                ></input>
+                            </label>
+
+                            <button
+                                className="analyzebuttons action-button"
+                                type="submit"
+                                onClick={updatetheUser}>Update</button>
+                        </form>
+                }
+
+                <div className="analyze_form analyze">
+                    <div className="input-label header">Your Item Types:</div>
+                    {
+                        edititem ?
+                            useritemtypes.map(each => {
+                                return <div key={each.id}>{each.description} </div>
+                            })
+                            :
+                            useritemtypes.map(each => {
+                                return <div key={each.id}>{each.description} <button onClick={removetype} id={each.id}>remove</button></div>
+                            })
+                    }
+                    {
+                        newtype ?
+                            <div>
+                                <input className="input-field" type="text"
+                                    placeholder="type description"
+                                    id="description"
+                                    onChange={handletypestate}
+                                ></input>
+                                <button className="analyzebuttons action-button" type="submit" onClick={submitnewtype}>submit</button>
+                            </div>
+                            : ""
+                    }
+
+                    <button className="analyzebuttons action-button" onClick={() => changeeditstate()} >edit types</button>
+                    <button className="analyzebuttons action-button" onClick={() => changenewtype()}>add new type</button>
+
+                </div>
+
+            </div>
         </>
     )
 }

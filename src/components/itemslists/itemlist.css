@@ -13,6 +13,12 @@
     position: center;
     min-width: 300px;
     max-width: 300px;
+    box-shadow: 1px 1px 0px #999,
+    2px 2px 0px #999,
+    3px 3px 0px #999,
+    4px 4px 0px #999,
+    5px 5px 0px #999,
+    6px 6px 0px #999;
 }
 
 .easy {
@@ -53,4 +59,57 @@
 .workhours {
     color:rgb(0, 3, 3);
     font-weight: 600;
+}
+
+.flexnote {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notebutton {
+    font-size:  12px !important;
+	padding: 0px  !important;
+    font: inherit;
+	font-size: 1.25rem;
+	width: 25%;
+	font-weight: 500;
+	background-color: #a52a2a;
+	border-radius: 6px;
+	color: #FFF;
+	border: 0;
+}
+
+.popup{
+    position:fixed;
+    top: 0;
+    width: 50%;
+    height: 100vh;
+    background-color: rgba 0,0,0,0.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-direction: column;
+    border-radius: 6px;
+}
+
+.popup-inner {
+    position: relative;
+    padding: 32px;
+    width: 35%;
+    max-width: 640px;
+    background-color: rgb(212, 197, 178);
+    overflow-wrap: break-word;
+    border-radius: 6px;
+}
+
+.close-btn{
+    width: 42%;
+    font-size:  15px !important;
+	padding: 1px  !important;
+    font: inherit;
+	background-color: #a52a2a;
+	border-radius: 6px;
+	color: #FFF;
+	border: 0;
 }

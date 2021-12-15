@@ -1,6 +1,11 @@
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
-.detail-form{
+.maincontainer {
+    display: flex;
+}
+
+.analyze_form {
     border: 5px solid black;
     box-shadow: 1px 1px 0px #999,
     2px 2px 0px #999,
@@ -9,22 +14,24 @@
     5px 5px 0px #999,
     6px 6px 0px #999;
     box-sizing: border-box;
-    max-width: 600px;
-    padding: 2rem 1rem 1rem 1rem;
+    max-width: 620px;
+    min-width: 400px;
+    padding: 3rem 1.5rem;
     margin: auto;
     border-radius: 10%;
     background-color: white;
     position: center;
-
+    min-height: 350px;
+    align-items: center;
 }
 
-.detail {
+.analyze {
     justify-content: center;
     display: flex;
     flex-direction: column;
 }
 
-.buttons {
+.analyzebuttons {
 padding-top: .5rem;
 display: flex;
 justify-content: center;
@@ -32,7 +39,7 @@ justify-content: center;
 
 body {
 	font-family: "DM Sans", sans-serif;
-	line-height: 1.5;
+	line-height: 2;
 	background-color: #faebd7;
 	padding: 0 2rem;
 }
@@ -54,17 +61,12 @@ body {
 	padding: .25rem 0;
 }
 
-.costAnalysis {
-	font-weight: bold !important;
-	color: firebrick
-}
-
-.action-buttondetail {
+.action-button {
 	font: inherit;
 	font-size: 1.25rem;
-	padding: 1em;
-    margin: .25em 2px;
-	width: 100%;
+	padding: .4em;
+    margin: .25em;
+	width: 80%;
 	font-weight: 500;
 	background-color: #a52a2a;
 	border-radius: 6px;
@@ -73,36 +75,3 @@ body {
 
 }
 
-.details {
-	display: flex; 
-	justify-content: center;
-}
-
-
-.buttonsmall {
-	font-size:  12px !important;
-	padding: 2px !important;
-	
-}
-
-.buttonmedium {
-	font-size:  20px !important;
-	padding: 5px !important;
-	
-}
-
-.indnote {
-	padding:  0px 50px;
-	font-size: 20px;
-	
-}
-
-.theform {
-	flex: 10
-}
-
-.thenotes {
-	text-align: center;
-	justify-content: center;
-	position: relative
-}

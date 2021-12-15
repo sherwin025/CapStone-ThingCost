@@ -60,7 +60,8 @@ export const AnalyzeForm = () => {
                             userId: parseInt(localStorage.getItem("ThingCost_customer")),
                             hoursNeeded: parseInt(item.price) / user.hourlySalary,
                             buydifficultyId: 0,
-                            purchased: false
+                            purchased: false,
+                            purchaseby: null
                         }
                         return fetch("http://localhost:8088/useritems", {
                             method: "POST",
@@ -78,14 +79,15 @@ export const AnalyzeForm = () => {
         } else {
             if (item.price != null && item.itemtypeId !== null && item.name !== null && item.need !== null) {
                 const copy = {
-                    itemtypeId: parseInt(item.itemtypeId),
+                    useritemtypeId: parseInt(item.itemtypeId),
                     price: parseInt(item.price),
                     name: item.name,
                     need: item.need === "true",
                     userId: parseInt(localStorage.getItem("ThingCost_customer")),
                     hoursNeeded: parseInt(item.price) / user.hourlySalary,
                     buydifficultyId: 0,
-                    purchased: false
+                    purchased: false,
+                    purchaseby: null
                 }
                 return fetch("http://localhost:8088/useritems", {
                     method: "POST",
@@ -105,7 +107,7 @@ export const AnalyzeForm = () => {
     return (
         <>
             <form className="analyze_form">
-                <label className="analyze input-label" htmlFor="description">Item Description
+                <label className="analyze input-label header" htmlFor="description">Item Description
                     <input className="input-field" type="text"
                         placeholder="short description/name"
                         id="name"
