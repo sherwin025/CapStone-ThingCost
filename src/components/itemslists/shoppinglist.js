@@ -63,17 +63,21 @@ export const ShoppingList = () => {
             {
                 props.trigger ?
                     <div className="popup">
-                        <div className="popup-inner">Item Notes:
-                            {
-                                notes.map((note) => {
-                                    if (note.userItemsId === props.id) {
-                                        return <li key={note.id}> {note.description} </li>
-                                    }
-                                })
-                            }
-                        </div>
 
-                        <button className="close-btn" onClick={() => props.setTrigger(false)}>close</button>
+                        <div className="popup-inner">
+                            <div className="div1">
+                                <div><button className="close-btn" onClick={() => props.setTrigger(false)}>close</button></div>
+                                <div className="div2">Item Notes:
+                                {
+                                    notes.map((note) => {
+                                        if (note.userItemsId === props.id) {
+                                            return <li key={note.id}> {note.description} </li>
+                                        }
+                                    })
+                                }
+                                </div>
+                            </div>
+                        </div>
                     </div> : ""
             }
         </>)

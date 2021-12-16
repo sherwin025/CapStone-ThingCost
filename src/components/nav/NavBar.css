@@ -12,13 +12,18 @@
     list-style-type: none;
     font: inherit;
 	font-size: 1.2rem;
-	padding: 1em;
     margin: .25em 1px;
 	width: 100%;
 	font-weight: 500;
-	background-color: #aca0a0;
-	border-radius: 20px;
 	color: #FFF;
 	border: 0;
     text-align: center;
+    text-decoration: none;
+}
+
+
+.qit{
+    background-color: #aca0a0;
+    border-radius: 20px;
+    padding: 1em;
 }

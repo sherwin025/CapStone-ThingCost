@@ -21,6 +21,10 @@
     6px 6px 0px #999;
 }
 
+.indItem:hover{
+    transform: scale(1.2);
+}
+
 .easy {
     background-color: rgb(143, 209, 143) ;
 }
@@ -84,7 +88,6 @@
     top: 0;
     width: 50%;
     height: 100vh;
-    background-color: rgba 0,0,0,0.2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,10 +104,19 @@
     background-color: rgb(212, 197, 178);
     overflow-wrap: break-word;
     border-radius: 6px;
+    box-shadow: 1px 1px 0px #999,
+    2px 2px 0px #999,
+    3px 3px 0px #999,
+    4px 4px 0px #999,
+    5px 5px 0px #999,
+    6px 6px 0px #999;
+    max-height: 20vh;
+    min-width: 134px;
+    overflow: scroll;
 }
 
 .close-btn{
-    width: 42%;
+    width: 150%;
     font-size:  15px !important;
 	padding: 1px  !important;
     font: inherit;
@@ -113,3 +125,18 @@
 	color: #FFF;
 	border: 0;
 }
+
+.div1 {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: -8%;
+}
+
+.div2{
+    overflow: auto;
+}
+
+.popup-inner::-webkit-scrollbar {
+    display: none;
+  }
