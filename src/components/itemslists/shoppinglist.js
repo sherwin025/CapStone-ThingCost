@@ -9,25 +9,44 @@ export const ShoppingList = () => {
     const history = useHistory()
     const [note, triggernote] = useState(false)
     const [theitemid, settheitemid] = useState(0)
+    const [searchterm, setsearchterm] = useState("")
+    const [searchitem, setsearchitem] = useState(false)
+    const [rankings, setrankings] = useState([])
 
 
 
     useEffect(() => {
         getItems()
             .then(getNotes)
+            .then(() => {
+                return fetch("http://localhost:8088/itemrankings")
+                    .then(res => res.json())
+                    .then(setrankings)
+            })
     }, [])
 
     const notpurchasedwants = () => {
         const notpurchases = items.filter(each => { return each.purchased === false })
         const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchaseswants = mynotpurchased.filter(each => { return each.need === false })
-        return notmypurchaseswants
+        if (searchterm !== "") {
+            const filteredpurchase = notmypurchaseswants.filter(item => item.name.toLowerCase().includes(searchterm))
+            return filteredpurchase
+        } else {
+            return notmypurchaseswants
+        }
+
     }
     const notpurchasedneeds = () => {
         const notpurchases = items.filter(each => { return each.purchased === false })
         const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchasesneeds = mynotpurchased.filter(each => { return each.need === true })
-        return notmypurchasesneeds
+        if (searchterm !== "") {
+            const filteredpurchase = notmypurchasesneeds.filter(item => item.name.toLowerCase().includes(searchterm))
+            return filteredpurchase
+        } else {
+            return notmypurchasesneeds
+        }
     }
 
     const redirect = (id) => {
@@ -58,6 +77,15 @@ export const ShoppingList = () => {
         settheitemid(id)
     }
 
+    const triggersearch = () => {
+        searchitem ? setsearchitem(false) : setsearchitem(true)
+        clearsearch()
+    }
+
+    const clearsearch = () => {
+        searchitem ? setsearchterm("") : setsearchterm(searchterm)
+    }
+
     const Popup = (props) => {
         return (<>
             {
@@ -68,13 +96,13 @@ export const ShoppingList = () => {
                             <div className="div1">
                                 <div><button className="close-btn" onClick={() => props.setTrigger(false)}>close</button></div>
                                 <div className="div2">Item Notes:
-                                {
-                                    notes.map((note) => {
-                                        if (note.userItemsId === props.id) {
-                                            return <li key={note.id}> {note.description} </li>
-                                        }
-                                    })
-                                }
+                                    {
+                                        notes.map((note) => {
+                                            if (note.userItemsId === props.id) {
+                                                return <li key={note.id}> {note.description} </li>
+                                            }
+                                        })
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -83,13 +111,87 @@ export const ShoppingList = () => {
         </>)
     }
 
+    const prioritydropdown = (array) => {
+        const thelength = array.length
+        let newarray = []
+        for (let i = 1; i < thelength + 1; i++) {
+            newarray.push(i)
+        }
+        return newarray
+    }
+
+    const postrankingtoapi = (event) => {
+        const apipost = {
+            ranking: parseInt(event.target.value),
+            itemId: parseInt(event.target.id)
+        }
+        return fetch("http://localhost:8088/itemrankings", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(apipost)
+        })
+            .then(() => {
+                return fetch("http://localhost:8088/useritems")
+                    .then(res => res.json())
+                    .then(setrankings)
+            })
+    }
+
+    const getrankingforitem = (id) => {
+        let theranking = 0
+        for (const rank of rankings){
+            if (rank.itemId === id){
+                theranking = rank.ranking
+            }
+        }
+        return theranking 
+    }
+
     return (
         <><div className="pagetitle">Shopping List</div>
+            <div className="buttondiv">
+                <div className="searchbutton">
+                    <div>
+                        <button
+                            onClick={() => triggersearch()
+                            }
+                            className="detail input-label header"
+                            htmlFor="description">
+                            Search Items
+                        </button>
+
+                    </div>
+                    {
+                        searchitem ?
+                            <div><input className="input-field searchterfield" type="text"
+                                placeholder="search for an item"
+                                id="name"
+                                onChange={(event) => setsearchterm(event.target.value.toLowerCase())}
+                            ></input> </div>
+                            :
+                            ""
+                    }
+
+                </div>
+            </div>
             <div className="list">
                 <div className="needs">
                     <div className="title header">Needs:</div>
                     {
                         notpurchasedneeds().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div className="prioritydrop">
+                                <select className="input-field"
+                                    onChange={postrankingtoapi}
+                                    name="category"
+                                    id={each.id}>
+                                    <option value="0">rank</option>
+                                    {
+                                        prioritydropdown(notpurchasedneeds()).map(num => { return <option >{num}</option> })
+                                    }
+                                </select>
+                            </div>
                             <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
                             <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
@@ -109,6 +211,16 @@ export const ShoppingList = () => {
                     <div className="title header">Wants:</div>
                     {
                         notpurchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div className="prioritydrop">
+                                <select className="input-field"
+                                    name="category"
+                                    id="itemtypeId">
+                                    <option value="0">rank</option>
+                                    {
+                                        prioritydropdown(notpurchasedwants()).map(num => { return <option id={each.id} value={num}>{num}</option> })
+                                    }
+                                </select>
+                            </div>
                             <div>{each.purchaseby ? <div>Wanted By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
                             <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>

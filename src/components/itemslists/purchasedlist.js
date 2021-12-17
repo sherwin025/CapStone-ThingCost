@@ -9,6 +9,9 @@ export const PurchasedList = () => {
     const history = useHistory()
     const [note, triggernote] = useState(false)
     const [theitemid, settheitemid] = useState(0)
+    const [searchterm, setsearchterm] = useState("")
+    const [searchitem, setsearchitem] = useState(false)
+
 
 
     useEffect(() => {
@@ -21,13 +24,23 @@ export const PurchasedList = () => {
         const notpurchases = items.filter(each => { return each.purchased === true })
         const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchaseswants = mynotpurchased.filter(each => { return each.need === false })
-        return notmypurchaseswants
+        if (searchterm !== "") {
+            const filteredpurchase = notmypurchaseswants.filter(item => item.name.toLowerCase().includes(searchterm))
+            return filteredpurchase
+        } else {
+            return notmypurchaseswants
+        }
     }
     const purchasedneeds = () => {
         const notpurchases = items.filter(each => { return each.purchased === true })
         const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchasesneeds = mynotpurchased.filter(each => { return each.need === true })
-        return notmypurchasesneeds
+        if (searchterm !== "") {
+            const filteredpurchase = notmypurchasesneeds.filter(item => item.name.toLowerCase().includes(searchterm))
+            return filteredpurchase
+        } else {
+            return notmypurchasesneeds
+        }
     }
 
     const redirect = (id) => {
@@ -47,6 +60,15 @@ export const PurchasedList = () => {
     const triggerthenotes = (id) => {
         note ? triggernote(false) : triggernote(true)
         settheitemid(id)
+    }
+
+    const triggersearch = () => {
+        searchitem ? setsearchitem(false) : setsearchitem(true)
+        clearsearch()
+    }
+
+    const clearsearch = () => {
+        searchitem ? setsearchterm("") : setsearchterm(searchterm)
     }
 
     const Popup = (props) => {
@@ -75,6 +97,31 @@ export const PurchasedList = () => {
     }
     return (
         <><div className="pagetitle">Purchased List</div>
+            <div className="buttondiv">
+                <div className="searchbutton">
+                <div>
+                    <button
+                        onClick={() => triggersearch()
+                        }
+                        className="detail input-label header"
+                        htmlFor="description">
+                        Search Items
+                    </button>
+
+                </div>
+                {
+                    searchitem ?
+                        <div><input className="input-field searchterfield" type="text"
+                            placeholder="search for an item"
+                            id="name"
+                            onChange={(event) => setsearchterm(event.target.value.toLowerCase())}
+                        ></input> </div>
+                        :
+                        ""
+                }
+
+            </div>
+            </div>
             <div className="list">
                 <div className="needs">
                     <div className="title header">Needs:</div>
