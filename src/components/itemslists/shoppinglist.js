@@ -19,21 +19,51 @@ export const ShoppingList = () => {
         getItems()
             .then(getNotes)
             .then(() => {
-                return fetch("http://localhost:8088/itemrankings")
-                    .then(res => res.json())
-                    .then(setrankings)
+                return fetch("http://localhost:8088/itemrankings?_sort=ranking")
             })
+            .then(res => res.json())
+            .then(res => setrankings(res))
+
     }, [])
 
     const notpurchasedwants = () => {
         const notpurchases = items.filter(each => { return each.purchased === false })
         const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchaseswants = mynotpurchased.filter(each => { return each.need === false })
+
         if (searchterm !== "") {
             const filteredpurchase = notmypurchaseswants.filter(item => item.name.toLowerCase().includes(searchterm))
             return filteredpurchase
         } else {
-            return notmypurchaseswants
+            const sortedarray = []
+            const rankedids = []
+            const notranked = []
+            if (rankings.length >= 1) {
+                for (const rank of rankings) {
+                    rankedids.push(rank.itemId)
+                }
+                for (const rank of rankings) {
+                    for (const needs of notmypurchaseswants) {
+                        if (rank.itemId === needs.id) {
+                            sortedarray.push(needs)
+                        }
+                    }
+                }
+
+                for (const needs of notmypurchaseswants) {
+                    if (rankedids.find(aid => aid === needs.id)) {
+
+                    } else {
+                        notranked.push(needs)
+                    }
+                }
+                for (const aneed of notranked) {
+                    sortedarray.push(aneed)
+                }
+                return sortedarray
+            } else {
+                return notmypurchaseswants
+            }
         }
 
     }
@@ -41,11 +71,41 @@ export const ShoppingList = () => {
         const notpurchases = items.filter(each => { return each.purchased === false })
         const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchasesneeds = mynotpurchased.filter(each => { return each.need === true })
+
         if (searchterm !== "") {
             const filteredpurchase = notmypurchasesneeds.filter(item => item.name.toLowerCase().includes(searchterm))
             return filteredpurchase
+
         } else {
-            return notmypurchasesneeds
+            const sortedarray = []
+            const rankedids = []
+            const notranked = []
+            if (rankings.length >= 1) {
+                for (const rank of rankings) {
+                    rankedids.push(rank.itemId)
+                }
+                for (const rank of rankings) {
+                    for (const needs of notmypurchasesneeds) {
+                        if (rank.itemId === needs.id) {
+                            sortedarray.push(needs)
+                        }
+                    }
+                }
+
+                for (const needs of notmypurchasesneeds) {
+                    if (rankedids.find(aid => aid === needs.id)) {
+
+                    } else {
+                        notranked.push(needs)
+                    }
+                }
+                for (const aneed of notranked) {
+                    sortedarray.push(aneed)
+                }
+                return sortedarray
+            } else {
+                return notmypurchasesneeds
+            }
         }
     }
 
@@ -111,8 +171,9 @@ export const ShoppingList = () => {
         </>)
     }
 
-    const prioritydropdown = (array) => {
-        const thelength = array.length
+    const prioritydropdown = (aboolean) => {
+        const notmypurchaseswants = items.filter(each => { return each.need === aboolean})
+        const thelength = notmypurchaseswants.length
         let newarray = []
         for (let i = 1; i < thelength + 1; i++) {
             newarray.push(i)
@@ -121,32 +182,49 @@ export const ShoppingList = () => {
     }
 
     const postrankingtoapi = (event) => {
-        const apipost = {
-            ranking: parseInt(event.target.value),
-            itemId: parseInt(event.target.id)
-        }
-        return fetch("http://localhost:8088/itemrankings", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(apipost)
-        })
-            .then(() => {
-                return fetch("http://localhost:8088/useritems")
-                    .then(res => res.json())
-                    .then(setrankings)
+        const theitem = rankings.find(each => each.itemId === parseInt(event.target.id))
+
+        if (theitem) {
+            theitem.ranking = parseInt(event.target.value)
+
+            return fetch(`http://localhost:8088/itemrankings/${theitem.id}`, {
+                method: "put",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(theitem)
             })
+                .then(() => {
+                    return fetch("http://localhost:8088/itemrankings?_sort=ranking")
+                        .then(res => res.json())
+                        .then(setrankings)
+                })
+                .then(getItems())
+
+        } else {
+            const apipost = {
+                ranking: parseInt(event.target.value),
+                itemId: parseInt(event.target.id)
+            }
+            return fetch("http://localhost:8088/itemrankings", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(apipost)
+            })
+                .then(() => {
+                    return fetch("http://localhost:8088/itemrankings?_sort=ranking")
+                        .then(res => res.json())
+                        .then(setrankings)
+                })
+                .then(getItems())
+        }
     }
 
-    const getrankingforitem = (id) => {
-        let theranking = 0
-        for (const rank of rankings){
-            if (rank.itemId === id){
-                theranking = rank.ranking
-            }
-        }
-        return theranking 
+    const gettheranking = (id) => {
+        const theitem = rankings.find(theitem => theitem.itemId === parseInt(id))
+        return theitem?.ranking
     }
 
     return (
@@ -188,7 +266,18 @@ export const ShoppingList = () => {
                                     id={each.id}>
                                     <option value="0">rank</option>
                                     {
-                                        prioritydropdown(notpurchasedneeds()).map(num => { return <option >{num}</option> })
+                                        prioritydropdown(true).map(num => {
+                                            if (rankings.find(theitem => theitem.itemId === each.id) !== undefined) {
+                                                if (gettheranking(each.id) === num) {
+                                                    return <option key={num} selected>{num}</option>
+                                                } else {
+                                                    return <option key={num} >{num}</option>
+                                                }
+
+                                            } else {
+                                                return <option key={num} >{num}</option>
+                                            }
+                                        })
                                     }
                                 </select>
                             </div>
@@ -213,11 +302,23 @@ export const ShoppingList = () => {
                         notpurchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
                             <div className="prioritydrop">
                                 <select className="input-field"
+                                    onChange={postrankingtoapi}
                                     name="category"
-                                    id="itemtypeId">
+                                    id={each.id}>
                                     <option value="0">rank</option>
                                     {
-                                        prioritydropdown(notpurchasedwants()).map(num => { return <option id={each.id} value={num}>{num}</option> })
+                                        prioritydropdown(false).map(num => {
+                                            if (rankings.find(theitem => theitem.itemId === each.id) !== undefined) {
+                                                if (gettheranking(each.id) === num) {
+                                                    return <option key={num} selected>{num}</option>
+                                                } else {
+                                                    return <option key={num} >{num}</option>
+                                                }
+
+                                            } else {
+                                                return <option key={num} >{num}</option>
+                                            }
+                                        })
                                     }
                                 </select>
                             </div>
