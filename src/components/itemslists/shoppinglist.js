@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { ItemContext } from "./ListProvider";
 import "./itemlist.css"
 import "./ItemDetail.css"
+import { UserContext } from "../profile/UserProvider"
 
 export const ShoppingList = () => {
     const { items, getItems, getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
@@ -12,6 +13,8 @@ export const ShoppingList = () => {
     const [searchterm, setsearchterm] = useState("")
     const [searchitem, setsearchitem] = useState(false)
     const [rankings, setrankings] = useState([])
+    const [user, setuser] = useState({})
+    const { getUsersById } = useContext(UserContext)
 
 
 
@@ -23,6 +26,10 @@ export const ShoppingList = () => {
             })
             .then(res => res.json())
             .then(res => setrankings(res))
+            .then(() => {
+                getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
+                    .then(res => setuser(res))
+            })
 
     }, [])
 
@@ -172,8 +179,9 @@ export const ShoppingList = () => {
     }
 
     const prioritydropdown = (aboolean) => {
-        const notmypurchaseswants = items.filter(each => { return each.need === aboolean})
-        const thelength = notmypurchaseswants.length
+        const notmypurchaseswants = items.filter(each => { return each.need === aboolean })
+        const notmypurchaseswantsnot = notmypurchaseswants.filter(each => {return each.purchased === false })
+        const thelength = notmypurchaseswantsnot.length
         let newarray = []
         for (let i = 1; i < thelength + 1; i++) {
             newarray.push(i)
@@ -257,6 +265,7 @@ export const ShoppingList = () => {
             <div className="list">
                 <div className="needs">
                     <div className="title header">Needs:</div>
+                    <div className="items">
                     {
                         notpurchasedneeds().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
                             <div className="prioritydrop">
@@ -283,7 +292,7 @@ export const ShoppingList = () => {
                             </div>
                             <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
+                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
                             <div className="buttons">
                                 <button className="action-buttondetail buttonsmall" type="button" onClick={() => updatetheItem(each.id)}>Purchased</button>
                                 <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
@@ -295,9 +304,11 @@ export const ShoppingList = () => {
                             </div>
                         </div>)
                     }
+                    </div>
                 </div>
                 <div className="wants">
                     <div className="title header">Wants:</div>
+                    <div className="items">
                     {
                         notpurchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
                             <div className="prioritydrop">
@@ -324,7 +335,7 @@ export const ShoppingList = () => {
                             </div>
                             <div>{each.purchaseby ? <div>Wanted By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
+                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
                             <div className="buttons">
                                 <button className="action-buttondetail buttonsmall" type="button" onClick={() => updatetheItem(each.id)}>Purchased</button>
                                 <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
@@ -336,6 +347,7 @@ export const ShoppingList = () => {
                             </div>
                         </div>)
                     }
+                    </div>
                 </div>
                 {
                     <Popup id={theitemid} setTrigger={triggernote} trigger={note} />

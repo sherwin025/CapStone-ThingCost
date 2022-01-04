@@ -58,7 +58,6 @@ export const AnalyzeForm = () => {
                             name: item.name,
                             need: item.need === "true",
                             userId: parseInt(localStorage.getItem("ThingCost_customer")),
-                            hoursNeeded: parseInt(item.price) / user.hourlySalary,
                             buydifficultyId: 0,
                             purchased: false,
                             purchaseby: null

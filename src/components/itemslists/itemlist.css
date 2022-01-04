@@ -1,6 +1,6 @@
 .list {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .indItem {
@@ -26,15 +26,15 @@
 }
 
 .easy {
-    background-color: rgb(143, 209, 143) ;
+    background-color: rgb(170, 236, 170) ;
 }
 
 .hard {
-    background-color: rgb(233, 54, 54);
+    background-color: rgb(238, 105, 105);
 }
 
 .med {
-    background-color: rgb(233, 233, 102);
+    background-color: rgb(245, 245, 130);
 }
 
 .pagetitle {
@@ -157,4 +157,20 @@
 .prioritydrop{
     margin-top: -2em;
     margin-left: 80%
+}
+
+.needs{
+
+    width: 50%;
+}
+
+.wants{
+
+    width: 50%;
+}
+
+.items{
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
 }

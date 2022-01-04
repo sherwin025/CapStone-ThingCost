@@ -1,0 +1,171 @@
+.communitycontainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 3%;
+}
+
+.userlist {
+    text-align: center;
+    margin-right: 20%;
+    background-color: whitesmoke;
+    padding: 2em;
+    border: 3px black solid;
+    box-shadow: 1px 1px 0px #999,
+    2px 2px 0px #999,
+    3px 3px 0px #999,
+    4px 4px 0px #999,
+    5px 5px 0px #999,
+    6px 6px 0px #999;
+    border-radius: 5%;
+    height: auto;
+    overflow: scroll;
+    max-height: 700px;
+}
+
+.usertitle {
+    color:grey;
+    text-align: center;
+    font-weight: bold;
+    font-size: 150%;
+}
+
+.userCard {
+    border: solid 2px gray;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10%;
+    color: rgb(37, 37, 37)
+}
+
+.postlist {
+    background-color: whitesmoke;
+    padding: 2em;
+    border: 3px black solid;
+    box-shadow: 1px 1px 0px #999,
+    2px 2px 0px #999,
+    3px 3px 0px #999,
+    4px 4px 0px #999,
+    5px 5px 0px #999,
+    6px 6px 0px #999;
+    border-radius: 5%;
+    height: auto;
+    margin-left: -2%;
+    overflow: scroll;
+    max-height: 700px;
+}
+
+.postlist::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .postlist {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .userlist::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .userlist {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+.postCard {
+    border: solid 2px gray;
+    margin: 30px;
+    padding: 10px;
+    border-radius: 10%;
+    color: rgb(37, 37, 37)
+}
+
+.postbutton {
+    text-align: center;
+}
+
+button{
+    justify-content: center;
+    font: inherit;
+	font-weight: 300;
+	border-radius: 6px;
+	border: 0;
+    background-color: rgb(199, 196, 196);
+    margin-left: 3px;
+}
+
+.userinfo{
+    font-weight: bold;
+    color: rgb(41, 68, 62);
+}
+
+.postedname {
+    text-align: right;
+    font-style: italic;
+}
+
+.postcontent {
+    font-size: 20px;
+}
+
+.popup{
+    position:fixed;
+    top: 0;
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-direction: column;
+    border-radius: 6px;
+}
+
+.popup-inner {
+    position: relative;
+    background-color: whitesmoke;
+    border-radius: 6px;
+    box-shadow: 1px 1px 0px #999,
+    2px 2px 0px #999,
+    3px 3px 0px #999,
+    4px 4px 0px #999,
+    5px 5px 0px #999,
+    6px 6px 0px #999;
+    overflow: scroll;
+    margin-left: 500px;
+    padding: -5px 
+}
+
+.close-btn{
+    width: 150%;
+    font-size:  15px !important;
+	padding: 1px  !important;
+    font: inherit;
+	background-color: rgb(160, 156, 156);
+	border-radius: 6px;
+	color: rgb(41, 68, 62);
+	border: 0;
+}
+
+.div1 {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: -8%;
+}
+
+.popup-inner::-webkit-scrollbar {
+    display: none;
+}
+
+.newpostfield{
+height: 5vh;
+top:0%;
+right:0%;
+z-index:10;
+background-color:#CCC;
+border: 1px solid grey;
+width: 260px;
+}

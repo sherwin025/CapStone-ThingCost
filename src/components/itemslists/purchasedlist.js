@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { ItemContext } from "./ListProvider";
 import "./itemlist.css"
 import "./ItemDetail.css"
+import { UserContext } from "../profile/UserProvider"
 
 export const PurchasedList = () => {
     const { items, getItems, deleteItem, getNotes, notes, deleteNote } = useContext(ItemContext)
@@ -11,13 +12,18 @@ export const PurchasedList = () => {
     const [theitemid, settheitemid] = useState(0)
     const [searchterm, setsearchterm] = useState("")
     const [searchitem, setsearchitem] = useState(false)
+    const [user, setuser] = useState({})
+    const { getUsersById } = useContext(UserContext)
 
 
 
     useEffect(() => {
         getItems()
             .then(getNotes)
-
+            .then(() => {
+                getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
+                    .then(res => setuser(res))
+            })
     }, [])
 
     const purchasedwants = () => {
@@ -99,36 +105,38 @@ export const PurchasedList = () => {
         <><div className="pagetitle">Purchased List</div>
             <div className="buttondiv">
                 <div className="searchbutton">
-                <div>
-                    <button
-                        onClick={() => triggersearch()
-                        }
-                        className="detail input-label header"
-                        htmlFor="description">
-                        Search Items
-                    </button>
+                    <div>
+                        <button
+                            onClick={() => triggersearch()
+                            }
+                            className="detail input-label header"
+                            htmlFor="description">
+                            Search Items
+                        </button>
+
+                    </div>
+                    {
+                        searchitem ?
+                            <div><input className="input-field searchterfield" type="text"
+                                placeholder="search for an item"
+                                id="name"
+                                onChange={(event) => setsearchterm(event.target.value.toLowerCase())}
+                            ></input> </div>
+                            :
+                            ""
+                    }
 
                 </div>
-                {
-                    searchitem ?
-                        <div><input className="input-field searchterfield" type="text"
-                            placeholder="search for an item"
-                            id="name"
-                            onChange={(event) => setsearchterm(event.target.value.toLowerCase())}
-                        ></input> </div>
-                        :
-                        ""
-                }
-
-            </div>
             </div>
             <div className="list">
                 <div className="needs">
                     <div className="title header">Needs:</div>
+                    <div className="items">
                     {
                         purchasedneeds().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
+                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
                             <div className="buttons">
                                 <button className="action-buttondetail buttonsmall" onClick={() => {
                                     redirect(each.id)
@@ -141,13 +149,16 @@ export const PurchasedList = () => {
                             </div>
                         </div>)
                     }
+                    </div>
                 </div>
                 <div className="wants">
                     <div className="title header">Wants:</div>
+                    <div className="items">
                     {
                         purchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                            <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {each.hoursNeeded.toFixed(2)}</div>
+                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
                             <div className="buttons">
                                 <button className="action-buttondetail buttonsmall" onClick={() => {
                                     redirect(each.id)
@@ -160,6 +171,7 @@ export const PurchasedList = () => {
                             </div>
                         </div>)
                     }
+                    </div>
                 </div>
                 {
                     <Popup id={theitemid} setTrigger={triggernote} trigger={note} />
