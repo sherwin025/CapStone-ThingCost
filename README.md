@@ -1,9 +1,9 @@
-ThingCost React App
+### ThingCost React App
 
-Overview
+### Overview
 This CRUD application was inspired by an old realization that the two simpliest ways to be better off financially is to earn more or spend less. My Goal with this app was to allow users to keep track of purchases and their shoppinglists, organzing their thoughts visually and displaying how many "work hours" it will cost them to purcahse that item. Hopefully allowing them to decide to persue a higher earning career or to cut back on some "unnecessary" purchases.
 
-Features
+### Features
 Simple user authentication
 New user registration
 easy to navigate design
@@ -13,7 +13,7 @@ full customization of user information (item types, item information, sorting or
 Each individual user can fully edit their items without effecting other users
 
 
-User Stories
+### User Stories
 As a user, I should be able to log in and analyze and item i want to purchase.
 As a user, I should be able to view my shopping/purchased list.
 As a user, I should be able to select an item and edit any information.
