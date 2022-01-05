@@ -4,11 +4,13 @@ import { ItemContext } from "./ListProvider"
 import { UserItemContext } from "../Analyze/FormProvider"
 import { Link } from "react-router-dom"
 import "./ItemDetail.css"
+import { UserContext } from "../profile/UserProvider"
 
 export const ItemDetail = () => {
     const { itemId } = useParams()
     const { getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
     const { useritemtypes, getallusertypes, difficultys, getalldifficulties } = useContext(UserItemContext)
+    const { getUsersById } = useContext(UserContext)
     const [theItem, setItem] = useState({})
     const [user, setuser] = useState({})
     const history = useHistory()
@@ -100,7 +102,7 @@ export const ItemDetail = () => {
                     ></input>
                 </label>
                 <div className="costAnalysis input-field">
-                    <p>This item will cost you {(each.price / user.hourlySalary).toFixed(2)} hours of work!</p>
+                    <p>This item will cost you {(theItem.price / user.hourlySalary).toFixed(2)} hours of work!</p>
                 </div>
                 <label className="detail input-label" htmlFor="buydifficulty"> How difficult will this be to purchase?:
                     <select className="input-field" name="category"
