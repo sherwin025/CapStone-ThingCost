@@ -1,4 +1,6 @@
 ### ThingCost React App
+<img width="848" alt="ThingCost" src="https://user-images.githubusercontent.com/33078772/148263333-76ba8e28-3c95-432f-ba20-191bdb1133b3.png">
+
 
 ### Overview
 This CRUD application was inspired by an old realization that the two simpliest ways to be better off financially is to earn more or spend less. My Goal with this app was to allow users to keep track of purchases and their shoppinglists, organzing their thoughts visually and displaying how many "work hours" it will cost them to purcahse that item. Hopefully allowing them to decide to persue a higher earning career or to cut back on some "unnecessary" purchases.
