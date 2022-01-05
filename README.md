@@ -5,6 +5,7 @@
 ### Overview
 This CRUD application was inspired by an old realization that the two simpliest ways to be better off financially is to earn more or spend less. My Goal with this app was to allow users to keep track of purchases and their shoppinglists, organzing their thoughts visually and displaying how many "work hours" it will cost them to purcahse that item. Hopefully allowing them to decide to persue a higher earning career or to cut back on some "unnecessary" purchases.
 
+You can create a new user or log in as svargas025@gmail.com 
 ### Features
 Simple user authentication
 New user registration
