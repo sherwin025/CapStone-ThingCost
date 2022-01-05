@@ -10,6 +10,7 @@ export const ItemDetail = () => {
     const { getItemById, deleteItem, updateItem, getNotes, notes, deleteNote } = useContext(ItemContext)
     const { useritemtypes, getallusertypes, difficultys, getalldifficulties } = useContext(UserItemContext)
     const [theItem, setItem] = useState({})
+    const [user, setuser] = useState({})
     const history = useHistory()
 
     useEffect(() => {
@@ -18,6 +19,10 @@ export const ItemDetail = () => {
             .then(getallusertypes(localStorage.getItem("ThingCost_customer")))
             .then(getalldifficulties)
             .then(getNotes)
+            .then(() => {
+                getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
+                    .then(res => setuser(res))
+            })
     }, [itemId])
 
 
@@ -95,7 +100,7 @@ export const ItemDetail = () => {
                     ></input>
                 </label>
                 <div className="costAnalysis input-field">
-                    <p>This item will cost you {(Math.round(theItem.hoursNeeded * 100) / 100).toFixed(2)} hours of work!</p>
+                    <p>This item will cost you {(each.price / user.hourlySalary).toFixed(2)} hours of work!</p>
                 </div>
                 <label className="detail input-label" htmlFor="buydifficulty"> How difficult will this be to purchase?:
                     <select className="input-field" name="category"
