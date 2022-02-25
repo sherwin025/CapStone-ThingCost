@@ -10,22 +10,6 @@ export const Register = (props) => {
 
     const history = useHistory()
 
-    const existingUserCheck = () => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                username: customer.username,
-                password: customer.password
-            })
-        })
-            .then(res => res.json())
-            .then(user => user.valid ? user[0] : false)
-    }
-
     const handleRegister = (e) => {
                     fetch("https://capstone-thingcost-django.herokuapp.com//register", {
                         method: "POST",
