@@ -8,7 +8,7 @@ export const ResourceProvider = (props) => {
 
 
     const getusermoneyresources = (id) => {
-        return fetch(`http://localhost:8000/userresources`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//userresources`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -18,7 +18,7 @@ export const ResourceProvider = (props) => {
     }
 
     const getusertipsandtricks= (id) => {
-        return fetch(`http://localhost:8000/usertips`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//usertips`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }

@@ -5,7 +5,7 @@ export const RandomTip = () => {
     const [tips, settips] = useState([])
 
     useEffect(() => {
-        return fetch(`http://localhost:8000/usertips`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//usertips`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }

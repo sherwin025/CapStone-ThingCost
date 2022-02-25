@@ -13,7 +13,7 @@ export const Register = (props) => {
     const history = useHistory()
 
     const existingUserCheck = () => {
-        return fetch(`http://localhost:8000/login`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export const Register = (props) => {
         existingUserCheck()
             .then((userExists) => {
                 if (!userExists) {
-                    fetch("http://localhost:8000/register", {
+                    fetch("https://capstone-thingcost-django.herokuapp.com//register", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"

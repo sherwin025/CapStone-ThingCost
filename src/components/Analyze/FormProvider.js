@@ -11,7 +11,7 @@ export const UserItemProvider = (props) => {
 
 
     const getalltypes = () => {
-        return fetch("http://localhost:8000/itemtypes", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com//itemtypes", {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -21,7 +21,7 @@ export const UserItemProvider = (props) => {
     }
 
     const getalldifficulties = () => {
-        return fetch("http://localhost:8000/difficulty", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com//difficulty", {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -31,7 +31,7 @@ export const UserItemProvider = (props) => {
     }
 
     const getmoneyResources = () => {
-        return fetch("http://localhost:8000/moneyresources", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com//moneyresources", {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -41,7 +41,7 @@ export const UserItemProvider = (props) => {
     }
 
     const gettipandtricks= () => {
-        return fetch("http://localhost:8000/tipandtricks", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com//tipandtricks", {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -52,7 +52,7 @@ export const UserItemProvider = (props) => {
 
     const  getallusertypes  = (id) => {
         const theId = parseInt(id)
-        return fetch(`http://localhost:8000/usertypes`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//usertypes`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }

@@ -42,7 +42,7 @@ export const AnalyzeForm = () => {
     const createItem = () => {
 
         if (newtype.description != null) {
-            return fetch("http://localhost:8000/usertypes", {
+            return fetch("https://capstone-thingcost-django.herokuapp.com//usertypes", {
                 method: "POST",
                 headers: {
                     "Authorization": `Token ${localStorage.getItem("token")}`,
@@ -64,7 +64,7 @@ export const AnalyzeForm = () => {
                             purchaseby: "2022-01-01",
                             hoursneeded: parseInt(item.price) / user.hourlysalary
                         }
-                        return fetch("http://localhost:8000/items", {
+                        return fetch("https://capstone-thingcost-django.herokuapp.com//items", {
                             method: "POST",
                             headers: {
                                 "Authorization": `Token ${localStorage.getItem("token")}`,
@@ -91,7 +91,7 @@ export const AnalyzeForm = () => {
                     purchased: false,
                     purchaseby: "2022-01-01"
                 }
-                return fetch("http://localhost:8000/items", {
+                return fetch("https://capstone-thingcost-django.herokuapp.com//items", {
                     method: "POST",
                     headers: {
                         "Authorization": `Token ${localStorage.getItem("token")}`,

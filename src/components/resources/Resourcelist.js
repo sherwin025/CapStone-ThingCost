@@ -29,7 +29,7 @@ export const Resources = () => {
     }
 
     const deletetip = (evt) => {
-        return fetch(`http://localhost:8000/usertips/${evt.target.value}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//usertips/${evt.target.value}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`,
@@ -41,7 +41,7 @@ export const Resources = () => {
     }
 
     const deletemoney = (evt) => {
-        return fetch(`http://localhost:8000/userresources/${evt.target.value}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//userresources/${evt.target.value}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`,
@@ -52,7 +52,7 @@ export const Resources = () => {
     }
 
     const addmoney = () => {
-        return fetch("http://localhost:8000/userresources", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com//userresources", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export const Resources = () => {
     }
 
     const addtipres = () => {
-        return fetch("http://localhost:8000/usertips", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com//usertips", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

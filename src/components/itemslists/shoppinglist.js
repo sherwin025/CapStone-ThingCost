@@ -22,7 +22,7 @@ export const ShoppingList = () => {
         getItems()
             .then(getNotes)
             .then(() => {
-                return fetch("http://localhost:8000/userranking", {
+                return fetch("https://capstone-thingcost-django.herokuapp.com//userranking", {
                     headers: {
                         "Authorization": `Token ${localStorage.getItem("token")}`
                     }
@@ -203,7 +203,7 @@ export const ShoppingList = () => {
         if (theitem) {
             theitem.ranking = parseInt(event.target.value)
 
-            return fetch(`http://localhost:8000/userranking/${theitem.id}`, {
+            return fetch(`https://capstone-thingcost-django.herokuapp.com//userranking/${theitem.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -212,7 +212,7 @@ export const ShoppingList = () => {
                 body: JSON.stringify(theitem)
             })
                 .then(() => {
-                    return fetch("http://localhost:8000/userranking", {
+                    return fetch("https://capstone-thingcost-django.herokuapp.com//userranking", {
                         headers: {
                             "Authorization": `Token ${localStorage.getItem("token")}`
                         }
@@ -227,7 +227,7 @@ export const ShoppingList = () => {
                 ranking: parseInt(event.target.value),
                 item: parseInt(event.target.id)
             }
-            return fetch("http://localhost:8000/userranking", {
+            return fetch("https://capstone-thingcost-django.herokuapp.com//userranking", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -236,7 +236,7 @@ export const ShoppingList = () => {
                 body: JSON.stringify(apipost)
             })
                 .then(() => {
-                    return fetch("http://localhost:8000/userranking", {
+                    return fetch("https://capstone-thingcost-django.herokuapp.com//userranking", {
                         headers: {
                             "Authorization": `Token ${localStorage.getItem("token")}`
                         }
