@@ -10,23 +10,30 @@ export const Register = (props) => {
     const { getmoneyResources, gettipandtricks, moneyresources, tipsandtricks, getalltypes, itemtypes } = useContext(UserItemContext)
 
 
-    useEffect(() => {
-        getmoneyResources().then(gettipandtricks).then(getalltypes)
-    }, [])
-
     const history = useHistory()
 
     const existingUserCheck = () => {
-        return fetch(`http://localhost:8088/users?email=${customer.email}`)
+        return fetch(`http://localhost:8000/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                username: customer.username,
+                password: customer.password
+            })
+        })
             .then(res => res.json())
-            .then(user => !!user.length)
+            .then(user => user.valid ? user[0] : false)
     }
+
     const handleRegister = (e) => {
         e.preventDefault()
         existingUserCheck()
             .then((userExists) => {
                 if (!userExists) {
-                    fetch("http://localhost:8088/users", {
+                    fetch("http://localhost:8000/register", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -35,47 +42,16 @@ export const Register = (props) => {
                     })
                         .then(res => res.json())
                         .then(createdUser => {
-                            itemtypes.forEach(element => {
-                                return fetch("http://localhost:8088/useritemtypes", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify({
-                                        description: element.description,
-                                        userId: createdUser.id
-                                    })
-                                })
-                            })
-                            tipsandtricks.forEach(element => {
-                                return fetch("http://localhost:8088/usertipsandtricks", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify({
-                                        description: element.description,
-                                        userId: createdUser.id
-                                    })
-                                })
-                            })
-                            moneyresources.forEach(element => {
-                                return fetch("http://localhost:8088/usermoneyresources", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify({
-                                        description: element.description,
-                                        url: element.url,
-                                        userId: createdUser.id
-                                    })
-                                })
-                            })
-                            if (createdUser.hasOwnProperty("id")) {
-                                localStorage.setItem("ThingCost_customer", createdUser.id)
-                                history.push("/")
-                            }
+                            localStorage.setItem("ThingCost_customer", createdUser.ThingCost_customer)
+                            localStorage.setItem("token", createdUser.token)
+                            getmoneyResources().then(gettipandtricks).then(getalltypes).then(
+                                () => {
+
+                                }
+                            )
+                        })
+                        .then( ()=> {
+                            history.push("/")
                         })
                 }
                 else {
@@ -102,18 +78,34 @@ export const Register = (props) => {
             <form className="form--login" onSubmit={handleRegister}>
                 <h1 className="h3 mb-3 font-weight-normal">Register for ThingCost Analysis</h1>
                 <fieldset>
-                    <label htmlFor="name"> Full Name </label>
+                    <label htmlFor="name"> First Name </label>
                     <input onChange={updateCustomer}
-                        type="text" id="name" className="form-control"
-                        placeholder="Enter your name" required autoFocus />
+                        type="text" id="first_name" className="form-control"
+                        required autoFocus />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="name"> Last Name </label>
+                    <input onChange={updateCustomer}
+                        type="text" id="last_name" className="form-control"
+                        required autoFocus />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="name"> Username </label>
+                    <input onChange={updateCustomer}
+                        type="text" id="username" className="form-control"
+                        required autoFocus />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="hourlysalary"> Hourly salary </label>
-                    <input onChange={updateCustomer} type="number" id="hourlySalary" className="form-control" placeholder="enter your hourly salary" required />
+                    <input onChange={updateCustomer} type="number" id="hourlysalary" className="form-control" placeholder="enter your hourly salary" required />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="email"> Email address </label>
                     <input onChange={updateCustomer} type="email" id="email" className="form-control" placeholder="Email address" required />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="email"> Password </label>
+                    <input onChange={updateCustomer} type="text" id="password" className="form-control" placeholder="password" required />
                 </fieldset>
                 <fieldset>
                     <button type="submit"> Register </button>

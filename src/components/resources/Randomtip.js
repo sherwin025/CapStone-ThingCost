@@ -5,7 +5,11 @@ export const RandomTip = () => {
     const [tips, settips] = useState([])
 
     useEffect(() => {
-        return fetch(`http://localhost:8088/usertipsandtricks?userId=${parseInt(localStorage.getItem("ThingCost_customer"))}`)
+        return fetch(`http://localhost:8000/usertips`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(settips)
 

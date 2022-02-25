@@ -24,11 +24,11 @@ export const EditNoteForm = () => {
         const copy = {
             id: note.id,
             description: note.description,
-            userItemsId: parseInt(note.userItemsId)
+            item: parseInt(note.item)
         }
 
         updateNote(copy)
-            .then(history.push(`/shoppinglist/${note.userItemsId}`))
+            .then(history.push(`/shoppinglist/${note.item}`))
 
     }
     return <>

@@ -28,7 +28,7 @@ export const PurchasedList = () => {
 
     const purchasedwants = () => {
         const notpurchases = items.filter(each => { return each.purchased === true })
-        const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
+        const mynotpurchased = notpurchases.filter(each => { return each.user?.id === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchaseswants = mynotpurchased.filter(each => { return each.need === false })
         if (searchterm !== "") {
             const filteredpurchase = notmypurchaseswants.filter(item => item.name.toLowerCase().includes(searchterm))
@@ -39,7 +39,7 @@ export const PurchasedList = () => {
     }
     const purchasedneeds = () => {
         const notpurchases = items.filter(each => { return each.purchased === true })
-        const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
+        const mynotpurchased = notpurchases.filter(each => { return each.user?.id === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchasesneeds = mynotpurchased.filter(each => { return each.need === true })
         if (searchterm !== "") {
             const filteredpurchase = notmypurchasesneeds.filter(item => item.name.toLowerCase().includes(searchterm))
@@ -50,11 +50,11 @@ export const PurchasedList = () => {
     }
 
     const redirect = (id) => {
-        return history.push(`./purchasedlist/${parseInt(id)}`)
+        return history.push(`/shoppinglist/${parseInt(id)}`)
     }
 
     const deletetheItem = (itemId) => {
-        const deleteNotes = notes.filter((each) => each.userItemsId === parseInt(itemId))
+        const deleteNotes = notes.filter((each) => each.item === parseInt(itemId))
         deleteNotes.forEach(element => {
             deleteNote(element.id)
         });
@@ -89,7 +89,7 @@ export const PurchasedList = () => {
                                 <div className="div2">Item Notes:
                                     {
                                         notes.map((note) => {
-                                            if (note.userItemsId === props.id) {
+                                            if (note.item === props.id) {
                                                 return <li key={note.id}> {note.description} </li>
                                             }
                                         })
@@ -133,17 +133,17 @@ export const PurchasedList = () => {
                     <div className="title header">Needs:</div>
                     <div className="items">
                     {
-                        purchasedneeds().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                        purchasedneeds().map(each => <div className={each.buydifficulty?.id === 3 ? "indItem hard" : each.buydifficulty?.id === 2 ? "indItem med" : each.buydifficulty?.id === 1 ? "indItem easy" : " indItem"} key={each.id}>
                             <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
+                            <div className="workhours">Work Hours: {(each.price / user.hourlysalary).toFixed(2)} </div>
                             <div className="buttons">
                                 <button className="action-buttondetail buttonsmall" onClick={() => {
                                     redirect(each.id)
                                 }}>Edit</button>
                                 <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
                             </div>
-                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"}
+                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficulty?.id ? `${each.buydifficulty?.id}` : "not rated"}
                             </div>
                                 <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
                             </div>
@@ -155,17 +155,17 @@ export const PurchasedList = () => {
                     <div className="title header">Wants:</div>
                     <div className="items">
                     {
-                        purchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                        purchasedwants().map(each => <div className={each.buydifficulty?.id === 3 ? "indItem hard" : each.buydifficulty?.id === 2 ? "indItem med" : each.buydifficulty?.id === 1 ? "indItem easy" : " indItem"} key={each.id}>
                             <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
                             <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
+                            <div className="workhours">Work Hours: {(each.price / user.hourlysalary).toFixed(2)} </div>
                             <div className="buttons">
                                 <button className="action-buttondetail buttonsmall" onClick={() => {
                                     redirect(each.id)
                                 }}>Edit</button>
                                 <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
                             </div>
-                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"}
+                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficulty?.id ? `${each.buydifficulty?.id}` : "not rated"}
                             </div>
                                 <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
                             </div>

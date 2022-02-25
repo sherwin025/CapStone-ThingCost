@@ -38,9 +38,6 @@ export const NavBar = (props) => {
                             <Link className="droplink" to="/resources" ><div className="qitL"> Resources</div></Link>
                         </div>
                         <div className={`menuNav ${navbarOpen ? " showMenu" : ""}`}>
-                            <Link className="droplink" to="/community"><div className="qitL"> Community</div></Link>
-                        </div>
-                        <div className={`menuNav ${navbarOpen ? " showMenu" : ""}`}>
                             <Link className="droplink" to="" onClick={logout}><div className="qitL"> Logout</div></Link>
                         </div>
                     </div> : ""}

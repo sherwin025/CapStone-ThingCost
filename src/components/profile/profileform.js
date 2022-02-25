@@ -37,30 +37,32 @@ export const MyProfile = () => {
     const updatetheUser = () => {
         const copy = {
             id: user.id,
-            name: user.name,
-            email: user.email,
-            hourlySalary: parseInt(user.hourlySalary)
+            hourlysalary: parseInt(user.hourlysalary)
         }
-        return updateUser(copy)
+        updateUser(copy)
     }
 
     const submitnewtype = () => {
-        return fetch("http://localhost:8088/useritemtypes", {
+        return fetch("http://localhost:8000/usertypes", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(thetype)
         })
             .then(setnewtype(false))
             .then(getUsersById(parseInt(localStorage.getItem("ThingCost_customer"))))
             .then(setuser)
-            .then(getallusertypes(parseInt(localStorage.getItem("ThingCost_customer"))))
+            .then(() => getallusertypes(parseInt(localStorage.getItem("ThingCost_customer"))))
     }
 
     const removetype = (evt) => {
-        return fetch(`http://localhost:8088/useritemtypes/${evt.target.id}`, { method: 'DELETE' })
-            .then(getallusertypes(parseInt(localStorage.getItem("ThingCost_customer"))))
+        return fetch(`http://localhost:8000/usertypes/${evt.target.id}`, { method: 'DELETE', headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("token")}`
+        } })
+            .then(()=> getallusertypes(parseInt(localStorage.getItem("ThingCost_customer"))))
     }
 
     const changeeditstate = () => {
@@ -79,33 +81,15 @@ export const MyProfile = () => {
                     editprofile ?
                         <div className="analyze_form analyze">
                             <div className="header input-label">Your Information</div>
-                            <div className="input-label">Name: {user.name}</div>
-                            <div className="input-label">Email: {user.email}</div>
-                            <div className="input-label">Hourly Earning: {user.hourlySalary}</div>
-                            <button className="analyzebuttons action-button" onClick={() => seteditprofile(false)}>Edit Profile</button>
+                            <div className="input-label">UserName: {user.user?.username}</div>
+                            <div className="input-label">Hourly Earning: {user.hourlysalary}</div>
+                            <button className="analyzebuttons action-button" onClick={() => seteditprofile(false)}>Edit Hourly Wage</button>
                         </div> :
                         <form className="analyze_form analyze">
-                            <label className="input-label" htmlFor="name">Name:
-                                <input className="input-field" type="text"
-                                    placeholder="short description/name"
-                                    id="name"
-                                    onChange={handlestate}
-                                    defaultValue={user.name}
-                                ></input>
-
-                            </label>
-                            <label className="input-label" htmlFor="email"> Email:
-                                <input className="input-field" type="text"
-                                    defaultValue={user.email}
-                                    id="email"
-                                    onChange={handlestate}
-                                ></input>
-                            </label>
-
-                            <label className="input-label" htmlFor="hourlySalary"> Hourly Salary:
+                            <label className="input-label" htmlFor="hourlySalary"> Hourly Salary $
                                 <input className="input-field" type="number"
-                                    defaultValue={user.hourlySalary}
-                                    id="hourlySalary"
+                                    defaultValue={user.hourlysalary}
+                                    id="hourlysalary"
                                     onChange={handlestate}
                                 ></input>
                             </label>

@@ -22,7 +22,11 @@ export const ShoppingList = () => {
         getItems()
             .then(getNotes)
             .then(() => {
-                return fetch("http://localhost:8088/itemrankings?_sort=ranking")
+                return fetch("http://localhost:8000/userranking", {
+                    headers: {
+                        "Authorization": `Token ${localStorage.getItem("token")}`
+                    }
+                })
             })
             .then(res => res.json())
             .then(res => setrankings(res))
@@ -33,9 +37,10 @@ export const ShoppingList = () => {
 
     }, [])
 
+
     const notpurchasedwants = () => {
         const notpurchases = items.filter(each => { return each.purchased === false })
-        const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
+        const mynotpurchased = notpurchases.filter(each => { return each.user?.id === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchaseswants = mynotpurchased.filter(each => { return each.need === false })
 
         if (searchterm !== "") {
@@ -47,11 +52,11 @@ export const ShoppingList = () => {
             const notranked = []
             if (rankings.length >= 1) {
                 for (const rank of rankings) {
-                    rankedids.push(rank.itemId)
+                    rankedids.push(rank.item)
                 }
                 for (const rank of rankings) {
                     for (const needs of notmypurchaseswants) {
-                        if (rank.itemId === needs.id) {
+                        if (rank.item === needs.id) {
                             sortedarray.push(needs)
                         }
                     }
@@ -76,7 +81,7 @@ export const ShoppingList = () => {
     }
     const notpurchasedneeds = () => {
         const notpurchases = items.filter(each => { return each.purchased === false })
-        const mynotpurchased = notpurchases.filter(each => { return each.userId === parseInt(localStorage.getItem("ThingCost_customer")) })
+        const mynotpurchased = notpurchases.filter(each => { return each.user?.id === parseInt(localStorage.getItem("ThingCost_customer")) })
         const notmypurchasesneeds = mynotpurchased.filter(each => { return each.need === true })
 
         if (searchterm !== "") {
@@ -89,11 +94,11 @@ export const ShoppingList = () => {
             const notranked = []
             if (rankings.length >= 1) {
                 for (const rank of rankings) {
-                    rankedids.push(rank.itemId)
+                    rankedids.push(rank.item)
                 }
                 for (const rank of rankings) {
                     for (const needs of notmypurchasesneeds) {
-                        if (rank.itemId === needs.id) {
+                        if (rank.item === needs.id) {
                             sortedarray.push(needs)
                         }
                     }
@@ -121,7 +126,7 @@ export const ShoppingList = () => {
     }
 
     const deletetheItem = (itemId) => {
-        const deleteNotes = notes.filter((each) => each.userItemsId === parseInt(itemId))
+        const deleteNotes = notes.filter((each) => each.item === parseInt(itemId))
         deleteNotes.forEach(element => {
             deleteNote(element.id)
         });
@@ -130,13 +135,16 @@ export const ShoppingList = () => {
     }
 
     const updatetheItem = (id) => {
-        getItemById(id)
+        return getItemById(id)
             .then((res) => {
                 const copy = { ...res }
+                copy.buydifficulty = res.buydifficulty?.id
+                copy.user = res.user?.id
+                copy.useritemtype = res.useritemtype?.id
                 copy.purchased = true
-                updateItem(copy)
+                return updateItem(copy)
+                    .then(getItems)
             })
-            .then(getItems())
     }
 
     const triggerthenotes = (id) => {
@@ -165,7 +173,7 @@ export const ShoppingList = () => {
                                 <div className="div2">Item Notes:
                                     {
                                         notes.map((note) => {
-                                            if (note.userItemsId === props.id) {
+                                            if (note.item === props.id) {
                                                 return <li key={note.id}> {note.description} </li>
                                             }
                                         })
@@ -180,7 +188,7 @@ export const ShoppingList = () => {
 
     const prioritydropdown = (aboolean) => {
         const notmypurchaseswants = items.filter(each => { return each.need === aboolean })
-        const notmypurchaseswantsnot = notmypurchaseswants.filter(each => {return each.purchased === false })
+        const notmypurchaseswantsnot = notmypurchaseswants.filter(each => { return each.purchased === false })
         const thelength = notmypurchaseswantsnot.length
         let newarray = []
         for (let i = 1; i < thelength + 1; i++) {
@@ -190,20 +198,25 @@ export const ShoppingList = () => {
     }
 
     const postrankingtoapi = (event) => {
-        const theitem = rankings.find(each => each.itemId === parseInt(event.target.id))
+        const theitem = rankings.find(each => each.item === parseInt(event.target.id))
 
         if (theitem) {
             theitem.ranking = parseInt(event.target.value)
 
-            return fetch(`http://localhost:8088/itemrankings/${theitem.id}`, {
-                method: "put",
+            return fetch(`http://localhost:8000/userranking/${theitem.id}`, {
+                method: "PUT",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify(theitem)
             })
                 .then(() => {
-                    return fetch("http://localhost:8088/itemrankings?_sort=ranking")
+                    return fetch("http://localhost:8000/userranking", {
+                        headers: {
+                            "Authorization": `Token ${localStorage.getItem("token")}`
+                        }
+                    })
                         .then(res => res.json())
                         .then(setrankings)
                 })
@@ -212,17 +225,22 @@ export const ShoppingList = () => {
         } else {
             const apipost = {
                 ranking: parseInt(event.target.value),
-                itemId: parseInt(event.target.id)
+                item: parseInt(event.target.id)
             }
-            return fetch("http://localhost:8088/itemrankings", {
+            return fetch("http://localhost:8000/userranking", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify(apipost)
             })
                 .then(() => {
-                    return fetch("http://localhost:8088/itemrankings?_sort=ranking")
+                    return fetch("http://localhost:8000/userranking", {
+                        headers: {
+                            "Authorization": `Token ${localStorage.getItem("token")}`
+                        }
+                    })
                         .then(res => res.json())
                         .then(setrankings)
                 })
@@ -231,7 +249,7 @@ export const ShoppingList = () => {
     }
 
     const gettheranking = (id) => {
-        const theitem = rankings.find(theitem => theitem.itemId === parseInt(id))
+        const theitem = rankings.find(theitem => theitem.item === parseInt(id))
         return theitem?.ranking
     }
 
@@ -266,87 +284,87 @@ export const ShoppingList = () => {
                 <div className="needs">
                     <div className="title header">Needs:</div>
                     <div className="items">
-                    {
-                        notpurchasedneeds().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
-                            <div className="prioritydrop">
-                                <select className="input-field"
-                                    onChange={postrankingtoapi}
-                                    name="category"
-                                    id={each.id}>
-                                    <option value="0">rank</option>
-                                    {
-                                        prioritydropdown(true).map(num => {
-                                            if (rankings.find(theitem => theitem.itemId === each.id) !== undefined) {
-                                                if (gettheranking(each.id) === num) {
-                                                    return <option key={num} selected>{num}</option>
+                        {
+                            notpurchasedneeds().map(each => <div className={each.buydifficulty?.id === 3 ? "indItem hard" : each.buydifficulty?.id === 2 ? "indItem med" : each.buydifficulty?.id === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                                <div className="prioritydrop">
+                                    <select className="input-field"
+                                        onChange={postrankingtoapi}
+                                        name="category"
+                                        id={each.id}>
+                                        <option value="0">rank</option>
+                                        {
+                                            prioritydropdown(true).map(num => {
+                                                if (rankings.find(theitem => theitem.item === each.id) !== undefined) {
+                                                    if (gettheranking(each.id) === num) {
+                                                        return <option key={num} selected>{num}</option>
+                                                    } else {
+                                                        return <option key={num} >{num}</option>
+                                                    }
+
                                                 } else {
                                                     return <option key={num} >{num}</option>
                                                 }
-
-                                            } else {
-                                                return <option key={num} >{num}</option>
-                                            }
-                                        })
-                                    }
-                                </select>
-                            </div>
-                            <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
-                            <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
-                            <div className="buttons">
-                                <button className="action-buttondetail buttonsmall" type="button" onClick={() => updatetheItem(each.id)}>Purchased</button>
-                                <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
-                                <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
-                            </div>
-                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"}
-                            </div>
-                                <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
-                            </div>
-                        </div>)
-                    }
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                                <div>{each.purchaseby ? <div>Needed By: {each.purchaseby}</div> : ""} </div>
+                                <div className="itemname">{each.name}</div>
+                                <div className="workhours">Work Hours: {(each.price / user.hourlysalary).toFixed(2)} </div>
+                                <div className="buttons">
+                                    <button className="action-buttondetail buttonsmall" type="button" onClick={() => updatetheItem(each.id)}>Purchased</button>
+                                    <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
+                                    <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
+                                </div>
+                                <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficulty?.id ? `${each.buydifficulty?.id}` : "not rated"}
+                                </div>
+                                    <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
+                                </div>
+                            </div>)
+                        }
                     </div>
                 </div>
                 <div className="wants">
                     <div className="title header">Wants:</div>
                     <div className="items">
-                    {
-                        notpurchasedwants().map(each => <div className={each.buydifficultyId === 3 ? "indItem hard" : each.buydifficultyId === 2 ? "indItem med" : each.buydifficultyId === 1 ? "indItem easy" : " indItem"} key={each.id}>
-                            <div className="prioritydrop">
-                                <select className="input-field"
-                                    onChange={postrankingtoapi}
-                                    name="category"
-                                    id={each.id}>
-                                    <option value="0">rank</option>
-                                    {
-                                        prioritydropdown(false).map(num => {
-                                            if (rankings.find(theitem => theitem.itemId === each.id) !== undefined) {
-                                                if (gettheranking(each.id) === num) {
-                                                    return <option key={num} selected>{num}</option>
+                        {
+                            notpurchasedwants().map(each => <div className={each.buydifficulty?.id === 3 ? "indItem hard" : each.buydifficulty?.id === 2 ? "indItem med" : each.buydifficulty?.id === 1 ? "indItem easy" : " indItem"} key={each.id}>
+                                <div className="prioritydrop">
+                                    <select className="input-field"
+                                        onChange={postrankingtoapi}
+                                        name="category"
+                                        id={each.id}>
+                                        <option value="0">rank</option>
+                                        {
+                                            prioritydropdown(false).map(num => {
+                                                if (rankings.find(theitem => theitem.item === each.id) !== undefined) {
+                                                    if (gettheranking(each.id) === num) {
+                                                        return <option key={num} selected>{num}</option>
+                                                    } else {
+                                                        return <option key={num} >{num}</option>
+                                                    }
+
                                                 } else {
                                                     return <option key={num} >{num}</option>
                                                 }
-
-                                            } else {
-                                                return <option key={num} >{num}</option>
-                                            }
-                                        })
-                                    }
-                                </select>
-                            </div>
-                            <div>{each.purchaseby ? <div>Wanted By: {each.purchaseby}</div> : ""} </div>
-                            <div className="itemname">{each.name}</div>
-                            <div className="workhours">Work Hours: {(each.price / user.hourlySalary).toFixed(2)}</div>
-                            <div className="buttons">
-                                <button className="action-buttondetail buttonsmall" type="button" onClick={() => updatetheItem(each.id)}>Purchased</button>
-                                <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
-                                <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
-                            </div>
-                            <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficultyId ? `${each.buydifficultyId}` : "not rated"}
-                            </div>
-                                <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
-                            </div>
-                        </div>)
-                    }
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                                <div>{each.purchaseby ? <div>Wanted By: {each.purchaseby}</div> : ""} </div>
+                                <div className="itemname">{each.name}</div>
+                                <div className="workhours">Work Hours: {(each.price / user.hourlysalary).toFixed(2)} </div>
+                                <div className="buttons">
+                                    <button className="action-buttondetail buttonsmall" type="button" onClick={() => updatetheItem(each.id)}>Purchased</button>
+                                    <button className="action-buttondetail buttonsmall" onClick={() => { redirect(each.id) }}>Edit</button>
+                                    <button className="action-buttondetail buttonsmall" type="button" onClick={() => deletetheItem(each.id)}>Delete</button>
+                                </div>
+                                <div className="flexnote"><div className="difficultid">Buy Difficulty: {each.buydifficulty?.id ? `${each.buydifficulty?.id}` : "not rated"}
+                                </div>
+                                    <button className=" notebutton" onClick={() => { triggerthenotes(parseInt(each.id)) }}>notes</button>
+                                </div>
+                            </div>)
+                        }
                     </div>
                 </div>
                 {

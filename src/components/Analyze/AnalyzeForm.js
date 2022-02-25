@@ -42,9 +42,10 @@ export const AnalyzeForm = () => {
     const createItem = () => {
 
         if (newtype.description != null) {
-            return fetch("http://localhost:8088/useritemtypes", {
+            return fetch("http://localhost:8000/usertypes", {
                 method: "POST",
                 headers: {
+                    "Authorization": `Token ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(newtype)
@@ -53,18 +54,20 @@ export const AnalyzeForm = () => {
                 .then((res) => {
                     if (item.price != null && item.name !== null && item.need !== null) {
                         const copy = {
-                            useritemtypeId: res.id,
+                            useritemtype: res.id,
                             price: parseInt(item.price),
                             name: item.name,
                             need: item.need === "true",
-                            userId: parseInt(localStorage.getItem("ThingCost_customer")),
-                            buydifficultyId: 0,
+                            user: parseInt(localStorage.getItem("ThingCost_customer")),
+                            buydifficulty: 1,
                             purchased: false,
-                            purchaseby: null
+                            purchaseby: "2022-01-01",
+                            hoursneeded: parseInt(item.price) / user.hourlysalary
                         }
-                        return fetch("http://localhost:8088/useritems", {
+                        return fetch("http://localhost:8000/items", {
                             method: "POST",
                             headers: {
+                                "Authorization": `Token ${localStorage.getItem("token")}`,
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify(copy)
@@ -78,19 +81,20 @@ export const AnalyzeForm = () => {
         } else {
             if (item.price != null && item.itemtypeId !== null && item.name !== null && item.need !== null) {
                 const copy = {
-                    useritemtypeId: parseInt(item.itemtypeId),
+                    useritemtype: parseInt(item.itemtypeId),
                     price: parseInt(item.price),
                     name: item.name,
                     need: item.need === "true",
-                    userId: parseInt(localStorage.getItem("ThingCost_customer")),
-                    hoursNeeded: parseInt(item.price) / user.hourlySalary,
-                    buydifficultyId: 0,
+                    user: parseInt(localStorage.getItem("ThingCost_customer")),
+                    hoursneeded: parseInt(item.price) / user.hourlysalary,
+                    buydifficulty: 1,
                     purchased: false,
-                    purchaseby: null
+                    purchaseby: "2022-01-01"
                 }
-                return fetch("http://localhost:8088/useritems", {
+                return fetch("http://localhost:8000/items", {
                     method: "POST",
                     headers: {
+                        "Authorization": `Token ${localStorage.getItem("token")}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(copy)

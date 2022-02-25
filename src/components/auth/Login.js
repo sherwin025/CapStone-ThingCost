@@ -5,11 +5,22 @@ import "./Login.css"
 
 export const Login = () => {
     const [email, set] = useState("")
+    const [password, setp] = useState("")
     const existDialog = useRef()
     const history = useHistory()
 
     const existingUserCheck = () => {
-        return fetch(`http://localhost:8088/users?email=${email}`)
+        return fetch(`http://localhost:8000/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                username: email,
+                password: password
+            })
+        })
             .then(res => res.json())
             .then(user => user.length ? user[0] : false)
     }
@@ -39,11 +50,19 @@ export const Login = () => {
                     <h1>ThingCost </h1>
                     <h2>Please sign in</h2>
                     <fieldset>
-                        <label htmlFor="inputEmail"> Email address </label>
-                        <input type="email"
+                        <label htmlFor="inputEmail"> Username </label>
+                        <input type="text"
                             onChange={evt => set(evt.target.value)}
                             className="form-control"
-                            placeholder="Email address"
+                            placeholder="Username"
+                            required autoFocus />
+                    </fieldset>
+                     <fieldset>
+                        <label htmlFor="inputEmail"> Password </label>
+                        <input type="text"
+                            onChange={evt => setp(evt.target.value)}
+                            className="form-control"
+                            placeholder="Username"
                             required autoFocus />
                     </fieldset>
                     <fieldset>

@@ -29,48 +29,59 @@ export const Resources = () => {
     }
 
     const deletetip = (evt) => {
-        return fetch(`http://localhost:8088/usertipsandtricks/${evt.target.value}`, {
-            method: "DELETE"
+        return fetch(`http://localhost:8000/usertips/${evt.target.value}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`,
+                "Content-Type": `application/json`
+            }
+            
         })
-            .then(getusertipsandtricks(parseInt(localStorage.getItem("ThingCost_customer"))))
+            .then(() => getusertipsandtricks(parseInt(localStorage.getItem("ThingCost_customer"))))
     }
 
     const deletemoney = (evt) => {
-        return fetch(`http://localhost:8088/usermoneyresources/${evt.target.value}`, {
-            method: "DELETE"
+        return fetch(`http://localhost:8000/userresources/${evt.target.value}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`,
+                "Content-Type": `application/json`
+            }
         })
-            .then(getusermoneyresources(parseInt(localStorage.getItem("ThingCost_customer"))))
+            .then(() => getusermoneyresources(parseInt(localStorage.getItem("ThingCost_customer"))))
     }
 
     const addmoney = () => {
-        return fetch("http://localhost:8088/usermoneyresources", {
+        return fetch("http://localhost:8000/userresources", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
             },
             body: JSON.stringify({
                 description: site.description,
                 url: site.url,
-                userId: parseInt(localStorage.getItem("ThingCost_customer"))
+                user: parseInt(localStorage.getItem("ThingCost_customer"))
             })
         })
-            .then(getusermoneyresources(parseInt(localStorage.getItem("ThingCost_customer"))))
-            .then(setsitebutton(false))
+        .then(() =>getusermoneyresources(parseInt(localStorage.getItem("ThingCost_customer"))))
+        .then(() => setsitebutton(false))
     }
 
     const addtipres = () => {
-        return fetch("http://localhost:8088/usertipsandtricks", {
+        return fetch("http://localhost:8000/usertips", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
             },
             body: JSON.stringify({
                 description: tip.description,
-                userId: parseInt(localStorage.getItem("ThingCost_customer"))
+                user: parseInt(localStorage.getItem("ThingCost_customer"))
             })
         })
-            .then(getusertipsandtricks(parseInt(localStorage.getItem("ThingCost_customer"))))
-            .then(settipbutton(false))
+        .then(() => getusertipsandtricks(parseInt(localStorage.getItem("ThingCost_customer"))))
+        .then(() => settipbutton(false))
     }
 
     return (<>

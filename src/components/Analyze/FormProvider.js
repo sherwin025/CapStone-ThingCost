@@ -11,32 +11,52 @@ export const UserItemProvider = (props) => {
 
 
     const getalltypes = () => {
-        return fetch("http://localhost:8088/itemtypes")
+        return fetch("http://localhost:8000/itemtypes", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(setitemtypes)
     }
 
     const getalldifficulties = () => {
-        return fetch("http://localhost:8088/buydifficultys")
+        return fetch("http://localhost:8000/difficulty", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(setdifficulties)
     }
 
     const getmoneyResources = () => {
-        return fetch("http://localhost:8088/moneyresources")
+        return fetch("http://localhost:8000/moneyresources", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(setmoneyresources)
     }
 
     const gettipandtricks= () => {
-        return fetch("http://localhost:8088/tipandtricks")
+        return fetch("http://localhost:8000/tipandtricks", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(settips)
     }
 
     const  getallusertypes  = (id) => {
         const theId = parseInt(id)
-        return fetch(`http://localhost:8088/useritemtypes?userId=${theId}`)
+        return fetch(`http://localhost:8000/usertypes`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(setuseritemtypes)
 }

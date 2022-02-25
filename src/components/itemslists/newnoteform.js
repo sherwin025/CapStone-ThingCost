@@ -19,7 +19,7 @@ export const NoteForm = () => {
     const saveNote = () => {
         const copy = {
             description: note.description,
-            userItemsId: parseInt(ItemnoteId)
+            item: parseInt(ItemnoteId)
         }
 
         addNote(copy)

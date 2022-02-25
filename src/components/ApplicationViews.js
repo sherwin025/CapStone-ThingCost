@@ -13,13 +13,11 @@ import { EditNoteForm } from "./itemslists/editnoteform"
 import { Resources } from "./resources/Resourcelist"
 import { ResourceProvider } from "./resources/resourceprovider"
 import { RandomTip } from "./resources/Randomtip";
-import { Community } from "./community/communitypage.js"
-import { UserPostProvider } from "./community/postProvider"
+
 
 export const ApplicationViews = () => {
     return (
         <>
-        <UserPostProvider>
             <ResourceProvider>
                 <UserProvider>
                     <ItemProvider>
@@ -58,9 +56,6 @@ export const ApplicationViews = () => {
                             <RandomTip />
                             <NoteForm />
                         </Route>
-                        <Route path="/community">
-                            <Community />
-                        </Route>
                         <Route path="/editnote/:editnoteId(\d+)">
                             <RandomTip />
                             <EditNoteForm />
@@ -68,7 +63,6 @@ export const ApplicationViews = () => {
                     </ItemProvider>
                 </UserProvider>
             </ResourceProvider>
-        </UserPostProvider>
         </>
     )
 }

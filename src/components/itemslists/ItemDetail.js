@@ -13,6 +13,7 @@ export const ItemDetail = () => {
     const { getUsersById } = useContext(UserContext)
     const [theItem, setItem] = useState({})
     const [user, setuser] = useState({})
+    const [importeditem, setimported] = useState("false")
     const history = useHistory()
 
     useEffect(() => {
@@ -25,7 +26,15 @@ export const ItemDetail = () => {
                 getUsersById(parseInt(localStorage.getItem("ThingCost_customer")))
                     .then(res => setuser(res))
             })
+            .then(()=> setimported("true"))
     }, [itemId])
+
+    useEffect(() => {
+        const copy = theItem
+        copy.buydifficulty = theItem.buydifficulty?.id
+        copy.useritemtype = theItem.useritemtype?.id
+        setItem(copy)
+    }, [importeditem])
 
 
 
@@ -48,13 +57,13 @@ export const ItemDetail = () => {
     const UpdateItem = (event) => {
         const copy = {
             id: theItem.id,
-            useritemtypeId: parseInt(theItem.useritemtypeId),
+            useritemtype: parseInt(theItem.useritemtype),
             price: parseInt(theItem.price),
             name: theItem.name,
             need: theItem.need,
-            userId: parseInt(localStorage.getItem("ThingCost_customer")),
-            hoursNeeded: theItem.hoursNeeded,
-            buydifficultyId: parseInt(theItem.buydifficultyId),
+            user: parseInt(localStorage.getItem("ThingCost_customer")),
+            hoursneeded: theItem.hoursneeded,
+            buydifficulty: parseInt(theItem.buydifficulty),
             purchased: theItem.purchased,
             purchaseby: theItem.purchaseby
         }
@@ -69,7 +78,7 @@ export const ItemDetail = () => {
         });
 
         return deleteItem(parseInt(itemId))
-            .then(history.goBack())
+            .then(history.push("/shoppinglist"))
 
 
     }
@@ -102,19 +111,19 @@ export const ItemDetail = () => {
                     ></input>
                 </label>
                 <div className="costAnalysis input-field">
-                    <p>This item will cost you {(theItem.price / user.hourlySalary).toFixed(2)} hours of work!</p>
+                    <p>This item will cost you {(theItem.price / user.hourlysalary).toFixed(2)} hours of work!</p>
                 </div>
                 <label className="detail input-label" htmlFor="buydifficulty"> How difficult will this be to purchase?:
                     <select className="input-field" name="category"
                         onChange={handlestate}
-                        id="buydifficultyId">
+                        id="buydifficulty">
                         <option value="0">Difficulty</option>
                         {
                             difficultys.map(type => {
-                                if (theItem.buydifficultyId === type.id) {
-                                    return <option key={type.id} value={type.id} selected>{type.description}</option>
+                                if (theItem.buydifficulty === type.id) {
+                                    return <option key={type.id} value={type.id} selected>{type.label}</option>
                                 } else {
-                                    return <option key={type.id} value={type.id}>{type.description}</option>
+                                    return <option key={type.id} value={type.id}>{type.label}</option>
                                 }
                             }
                             )
@@ -125,12 +134,12 @@ export const ItemDetail = () => {
                 <label className="detail input-label" htmlFor="itemType">Category:
                     <select className="input-field" name="category"
                         onChange={handlestate}
-                        id="itemtypeId"
+                        id="useritemtype"
                     >
                         <option value="0"> Choose a category</option>
                         {
                             useritemtypes.map(type => {
-                                if (type.id === theItem.useritemtypeId) {
+                                if (type.id === theItem.useritemtype) {
                                     return <option key={type.id} value={type.id} selected>{type.description}</option>
                                 } else {
                                     return <option key={type.id} value={type.id}>{type.description}</option>
@@ -195,11 +204,13 @@ export const ItemDetail = () => {
                     <Link className="navbar__link" to="/shoppinglist"><button className="action-buttondetail">Close</button></Link>
                 </div>
             </form>
+
+
             <div className="detail-form thenotes">
                 <div className="detail input-label header">Notes:</div>
                 {
                     notes.map(each => {
-                        if (each.userItemsId === parseInt(itemId)) {
+                        if (each.item === parseInt(itemId)) {
                             return <div className="indnote" key={each.id}>{each.description}
                             <div className="buttons">
                                 <button className="action-buttondetail buttonsmall" id={each.id} onClick={removenote}>remove note </button>

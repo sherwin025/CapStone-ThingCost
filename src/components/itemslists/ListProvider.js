@@ -7,22 +7,31 @@ export const ItemProvider = (props) => {
     const [notes, setnotes] = useState([])
 
     const getItems = () => {
-        return fetch("http://localhost:8088/useritems")
+        return fetch("http://localhost:8000/items", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(setitems)
     }
 
     const getNotes= () => {
-        return fetch("http://localhost:8088/useritemsnotes")
+        return fetch("http://localhost:8000/usernotes", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
             .then(res => res.json())
             .then(setnotes)
     }
 
     const addItem = itemObj => {
-        return fetch("http://localhost:8088/useritems", {
+        return fetch("http://localhost:8000/items", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(itemObj)
         })
@@ -32,34 +41,51 @@ export const ItemProvider = (props) => {
 
     const getItemById = id => {
         const theId = parseInt(id)
-        return fetch(`http://localhost:8088/useritems/${theId}`)
+        return fetch(`http://localhost:8000/items/${theId}`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
                 .then(res => res.json())
     }
 
     const getNotesById = id => {
         const theId = parseInt(id)
-        return fetch(`http://localhost:8088/useritemsnotes/${theId}`)
+        return fetch(`http://localhost:8000/usernotes/${theId}`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
+        })
                 .then(res => res.json())
     }
 
     const deleteItem = itemId => {
-        return fetch(`http://localhost:8088/useritems/${itemId}`, {
-            method: "DELETE"
+        return fetch(`http://localhost:8000/items/${itemId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
         })
             .then(getItems)
     }
 
     const deleteNote = noteId => {
-        return fetch(`http://localhost:8088/useritemsnotes/${noteId}`, {
-            method: "DELETE"
+        return fetch(`http://localhost:8000/usernotes/${noteId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
+            }
         })
     }
 
     const addNote = itemObj => {
-        return fetch("http://localhost:8088/useritemsnotes", {
+        return fetch("http://localhost:8000/usernotes", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(itemObj)
         })
@@ -67,10 +93,11 @@ export const ItemProvider = (props) => {
     }
 
     const updateNote = item => {
-        return fetch(`http://localhost:8088/useritemsnotes/${item.id}`, {
+        return fetch(`http://localhost:8000/usernotes/${item.id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(item)
         })
@@ -79,15 +106,14 @@ export const ItemProvider = (props) => {
     }
 
     const updateItem = item => {
-        return fetch(`http://localhost:8088/useritems/${item.id}`, {
+        return fetch(`http://localhost:8000/items/${item.id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(item)
         })
-            .then(res=>res.json())
-            .then(getItems)
     }
 
     return (
