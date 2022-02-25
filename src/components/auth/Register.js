@@ -27,10 +27,6 @@ export const Register = (props) => {
     }
 
     const handleRegister = (e) => {
-        e.preventDefault()
-        existingUserCheck()
-            .then((userExists) => {
-                if (!userExists) {
                     fetch("https://capstone-thingcost-django.herokuapp.com//register", {
                         method: "POST",
                         headers: {
@@ -47,11 +43,6 @@ export const Register = (props) => {
                             history.push("/")
                         })
                 }
-                else {
-                    conflictDialog.current.showModal()
-                }
-            })
-
     }
 
     const updateCustomer = (evt) => {
