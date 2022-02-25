@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useHistory } from "react-router-dom"
 import "./Login.css"
-import { UserItemContext } from "../Analyze/FormProvider"
-import { useContext } from "react/cjs/react.development"
+
 
 export const Register = (props) => {
     const [customer, setCustomer] = useState({})
     const conflictDialog = useRef()
-    const { getmoneyResources, gettipandtricks, moneyresources, tipsandtricks, getalltypes, itemtypes } = useContext(UserItemContext)
 
 
     const history = useHistory()
@@ -44,11 +42,6 @@ export const Register = (props) => {
                         .then(createdUser => {
                             localStorage.setItem("ThingCost_customer", createdUser.ThingCost_customer)
                             localStorage.setItem("token", createdUser.token)
-                            getmoneyResources().then(gettipandtricks).then(getalltypes).then(
-                                () => {
-
-                                }
-                            )
                         })
                         .then( ()=> {
                             history.push("/")
