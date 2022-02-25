@@ -43,7 +43,7 @@ export const MyProfile = () => {
     }
 
     const submitnewtype = () => {
-        return fetch("https://capstone-thingcost-django.herokuapp.com//usertypes", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com/usertypes", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export const MyProfile = () => {
     }
 
     const removetype = (evt) => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//usertypes/${evt.target.id}`, { method: 'DELETE', headers: {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/usertypes/${evt.target.id}`, { method: 'DELETE', headers: {
             "Content-Type": "application/json",
             "Authorization": `Token ${localStorage.getItem("token")}`
         } })

@@ -7,7 +7,7 @@ export const UserProvider = (props) => {
     const [users, setusers] = useState([])
 
     const getUsers = () => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//users`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/users`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -17,7 +17,7 @@ export const UserProvider = (props) => {
     }
 
     const getUsersById = (id) => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//users/${id}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/users/${id}`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -26,7 +26,7 @@ export const UserProvider = (props) => {
     }
 
     const updateUser = (obj) => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//users/${obj.id}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/users/${obj.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

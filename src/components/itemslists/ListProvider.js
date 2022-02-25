@@ -7,7 +7,7 @@ export const ItemProvider = (props) => {
     const [notes, setnotes] = useState([])
 
     const getItems = () => {
-        return fetch("https://capstone-thingcost-django.herokuapp.com//items", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com/items", {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -17,7 +17,7 @@ export const ItemProvider = (props) => {
     }
 
     const getNotes= () => {
-        return fetch("https://capstone-thingcost-django.herokuapp.com//usernotes", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com/usernotes", {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -27,7 +27,7 @@ export const ItemProvider = (props) => {
     }
 
     const addItem = itemObj => {
-        return fetch("https://capstone-thingcost-django.herokuapp.com//items", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com/items", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const ItemProvider = (props) => {
 
     const getItemById = id => {
         const theId = parseInt(id)
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//items/${theId}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/items/${theId}`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -51,7 +51,7 @@ export const ItemProvider = (props) => {
 
     const getNotesById = id => {
         const theId = parseInt(id)
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//usernotes/${theId}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/usernotes/${theId}`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
@@ -60,7 +60,7 @@ export const ItemProvider = (props) => {
     }
 
     const deleteItem = itemId => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//items/${itemId}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/items/${itemId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export const ItemProvider = (props) => {
     }
 
     const deleteNote = noteId => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//usernotes/${noteId}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/usernotes/${noteId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export const ItemProvider = (props) => {
     }
 
     const addNote = itemObj => {
-        return fetch("https://capstone-thingcost-django.herokuapp.com//usernotes", {
+        return fetch("https://capstone-thingcost-django.herokuapp.com/usernotes", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export const ItemProvider = (props) => {
     }
 
     const updateNote = item => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//usernotes/${item.id}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/usernotes/${item.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export const ItemProvider = (props) => {
     }
 
     const updateItem = item => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//items/${item.id}`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/items/${item.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

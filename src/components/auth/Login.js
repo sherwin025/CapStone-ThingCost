@@ -10,7 +10,7 @@ export const Login = () => {
     const history = useHistory()
 
     const existingUserCheck = () => {
-        return fetch(`https://capstone-thingcost-django.herokuapp.com//login`, {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
