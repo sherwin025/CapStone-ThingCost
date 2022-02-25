@@ -10,7 +10,27 @@ export const Register = (props) => {
 
     const history = useHistory()
 
+    const existingUserCheck = () => {
+        return fetch(`https://capstone-thingcost-django.herokuapp.com//login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                username: customer.username,
+                password: customer.password
+            })
+        })
+            .then(res => res.json())
+            .then(user => user.valid ? user[0] : false)
+    }
+
     const handleRegister = (e) => {
+        e.preventDefault()
+        existingUserCheck()
+            .then((userExists) => {
+                if (!userExists) {
                     fetch("https://capstone-thingcost-django.herokuapp.com//register", {
                         method: "POST",
                         headers: {
@@ -27,6 +47,11 @@ export const Register = (props) => {
                             history.push("/")
                         })
                 }
+                else {
+                    conflictDialog.current.showModal()
+                }
+            })
+
     }
 
     const updateCustomer = (evt) => {
